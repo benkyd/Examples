@@ -1,0 +1,4 @@
+i = input("Number: ")
+
+if (i == 0):
+    print("HELLO")

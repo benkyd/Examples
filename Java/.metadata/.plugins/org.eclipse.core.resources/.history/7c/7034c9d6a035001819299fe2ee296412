@@ -1,0 +1,6 @@
+
+public class Program {
+	public void Main() {
+		print("HELLO");
+	}
+}

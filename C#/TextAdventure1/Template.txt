@@ -1,0 +1,50 @@
+            Level = "";
+            HungerDown();
+            GetHealth();
+
+            Eaten:
+            Console.Clear();
+            Console.WriteLine("You choose to");
+            Console.WriteLine("You currently have {0} water {1} food", Water, Food);
+            Console.WriteLine();
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine();
+            Console.WriteLine(HaveRadiationSuit());
+            Console.WriteLine(GetHealth());
+            Console.WriteLine();
+            Console.WriteLine("F to eat 1 food (your hunger level is now at {0}/10)", PlayerHunger);
+            Console.WriteLine(Hungry());
+            Console.WriteLine();
+            Console.WriteLine("From here you can ");
+
+            Console.WriteLine();
+            Console.WriteLine("Go for it (1) Extinguish flames (2) Disregard (3)");
+
+            var response = Console.ReadKey();
+            Console.WriteLine();
+            switch (response.KeyChar)
+            {
+                case '1':
+                    Branch();
+                    break;
+
+                case '2':
+                    Branch();
+                    break;
+
+                case '3':
+                    Branch();
+                    break;
+
+                case 'F':
+                case 'f':
+                    Eat();
+                    goto Eaten;
+
+                case 'S':
+                case 's':
+                    Save();
+                    Branch();
+                    break;
+            }

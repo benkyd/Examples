@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Cloud.Speech.V1" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="audio.raw" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+</Project>
