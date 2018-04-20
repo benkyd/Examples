@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="Testing Java">
-        <wb-resource deploy-path="/" source-path="/WebContent"/>
-        <property name="context-root" value="Testing_Java"/>
-        <property name="java-output-path" value="/Testing Java/build/classes"/>
-    </wb-module>
-</project-modules>
