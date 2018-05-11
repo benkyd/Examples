@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRCServer", "IRCServer\IRCServer.csproj", "{00670ECE-7E5D-4A26-BF43-ECBABCF4D5FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00670ECE-7E5D-4A26-BF43-ECBABCF4D5FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00670ECE-7E5D-4A26-BF43-ECBABCF4D5FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00670ECE-7E5D-4A26-BF43-ECBABCF4D5FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00670ECE-7E5D-4A26-BF43-ECBABCF4D5FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6E17E5F6-A03A-4856-89F7-36485277CF60}
+	EndGlobalSection
+EndGlobal
