@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 namespace Networking_Tools {
     class UserInterface {
 
+        public void Load() {
 
+        }
 
     }
 }
