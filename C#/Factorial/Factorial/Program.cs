@@ -8,11 +8,11 @@ namespace Factorial {
             bool exit = false;
             while (!exit) {
                 bool correct = false;
-                int find = 0;
+                BigInteger find = 0;
                 while (!correct) {
                     try {
                         Console.Write("Enter a number to find the factorial of: ");
-                        find = int.Parse(Console.ReadLine());
+                        find = BigInteger.Parse(Console.ReadLine());
                         correct = true;
                     } catch {
                         Console.WriteLine("That is not a number");
@@ -31,7 +31,7 @@ namespace Factorial {
             }
         }
 
-        static BigInteger Factorial(int arg) {
+        static BigInteger Factorial(BigInteger arg) {
             Stopwatch t = new Stopwatch(); ;
             t.Start();
             BigInteger value = 1;
