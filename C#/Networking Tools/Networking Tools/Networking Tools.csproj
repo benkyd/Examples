@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{92DB8F4B-F5E6-4BCE-B496-7386AB268A18}</ProjectGuid>
+    <ProjectGuid>{9F0BDD71-F93F-4800-B76A-0142A0CAA8BB}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Countdown_Numbers_Game</RootNamespace>
-    <AssemblyName>Countdown Numbers Game</AssemblyName>
+    <RootNamespace>Networking_Tools</RootNamespace>
+    <AssemblyName>Networking Tools</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -34,7 +34,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,8 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DNSTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserInterface.cs" />
+    <Compile Include="WebTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
