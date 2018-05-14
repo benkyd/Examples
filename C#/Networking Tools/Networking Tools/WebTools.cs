@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 namespace Networking_Tools {
     class WebTools {
 
+        public string HostName { get; set; }
 
-
+        public string ping() {
+            return "";
+        }
     }
 }
