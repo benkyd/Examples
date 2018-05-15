@@ -76,25 +76,39 @@ namespace Joystick_Controler {
     }
 
     class MouseTranslator {
+
+        private bool lastB;
+        private bool mouseDown;
+
         private int joyX;
         private int joyY;
 
         public MouseTranslator(int x, int y, bool b) {
             joyX = x;
             joyY = y;
-            if (b) {
-                click();
+
+            if (b != lastB && mouseDown) {
+                clickUp();
+            } else if (b == lastB && mouseDown) {
+            } else if (b != lastB && !mouseDown) {
+                clickDown();
             }
+        
             moveMouse();
+            lastB = b;
         }
 
         private void moveMouse() {
-            Cursor.Position = new Point(Cursor.Position.X - joyX, Cursor.Position.Y - joyY);
+            Cursor.Position = new Point(Cursor.Position.X - joyX, Cursor.Position.Y);
         }
 
-        private void click() {
+        private void clickDown() {
             mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+            mouseDown = true;
+        }
+        private void clickUp() {
             mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+            mouseDown = false;
         }
 
         private const UInt32 MOUSEEVENTF_LEFTDOWN = 0x0002;
