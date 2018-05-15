@@ -1,4 +1,4 @@
-#include <DHT.h>
+lol#include <DHT.h>
 #include <DHT_U.h>
 #include <LiquidCrystal.h>
 
