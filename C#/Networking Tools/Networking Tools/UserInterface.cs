@@ -1,16 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Networking_Tools {
     class UserInterface {
 
-        private int startWidth;
-        private int startHeight;
+        private int startWidth { get; set; }
+        private int startHeight { get; set; }
+
+        public List<string> DNSTools;
+        public List<string> WebTools;
 
         public void Load() {
+
+            DNSTools = new List<string>() {
+                "getips",
+                "getdnsend"
+            };
+
+            WebTools = new List<string>() {
+                "ping",
+                "redirects"
+            };
+
             Console.SetCursorPosition(0, 0);
             startHeight = Console.WindowHeight;
             startWidth = Console.WindowWidth;
@@ -18,18 +30,28 @@ namespace Networking_Tools {
         }
 
         public void MainMenu() {
+            Console.Clear();
             Console.WriteLine("Networking Tools by Benjamin Kyd");
+            Connectivity_Test test = new Connectivity_Test();
             while (true) {
-                Console.Write("> ");
-                options();
+                if (test.checkConnection("www.plane000.co.uk")) {
+                    Console.Write("> ");
+                    getInput();
+                } else {
+                    Console.WriteLine("Connection failed... Attepting to reconnect...");
+                    Thread.Sleep(10000);
+                    MainMenu();
+                }
             }
         }
 
-        private void options() {
+        private void getInput() { 
+            CLI_Tools cli = new CLI_Tools();
+
             var input = Console.ReadLine().Trim();
 
-            string[] parsed = parseInput(input);
-            string[] trimmed = trimFirst(parsed);
+            string[] parsed = cli.ParseInput(input);
+            string[] trimmed = cli.TrimFirst(parsed);
             string[] response = new string[0];
 
             switch (parsed[0]) {
@@ -37,17 +59,18 @@ namespace Networking_Tools {
                     break;
 
                 case "ping":
+                    WebTools ping = new WebTools(parsed, trimmed);
+                    response = ping.WebParser();
                     break;
 
                 case "getdns":
-                    if (parsed.Length > 1) {
-                        DNSTest dns = new DNSTest();
-                        dns.HostName = parsed[1];
-                        response = dns.GetIPs();
-                    } else {
-                        response = new string[1];
-                        response[0] = "No arguments given";
-                    }
+                    DNSTest getDns = new DNSTest(parsed, trimmed);
+                    response = getDns.DNSParser();
+                    break;
+
+                case "getdnsendpoint":
+                    DNSTest endPoint = new DNSTest(parsed, trimmed);
+                    response = endPoint.DNSParser();
                     break;
 
                 default:
@@ -55,22 +78,7 @@ namespace Networking_Tools {
                     break;
             }
 
-            printArray(response);
-        }
-
-        private string[] parseInput(string arr) {
-            return arr.ToLower().Split(' ');
-        }
-
-        private string[] trimFirst(string[] arr) {
-            arr = arr.Where(w => w != arr[0]).ToArray();
-            return arr;
-        }
-
-        private void printArray(string[] arr) {
-            for (int i = 0; i < arr.Length; i++) {
-                Console.WriteLine(arr[i]);
-            }
+            cli.PrintArray(response);
         }
     }
 }

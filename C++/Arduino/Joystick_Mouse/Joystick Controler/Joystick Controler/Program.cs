@@ -77,7 +77,6 @@ namespace Joystick_Controler {
 
     class MouseTranslator {
 
-        private bool lastB;
         private bool mouseDown;
 
         private int joyX;
@@ -87,15 +86,9 @@ namespace Joystick_Controler {
             joyX = x;
             joyY = y;
 
-            if (b != lastB && mouseDown) {
-                clickUp();
-            } else if (b == lastB && mouseDown) {
-            } else if (b != lastB && !mouseDown) {
-                clickDown();
-            }
+
         
             moveMouse();
-            lastB = b;
         }
 
         private void moveMouse() {
