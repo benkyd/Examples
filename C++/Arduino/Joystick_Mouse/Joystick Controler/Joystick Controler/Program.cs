@@ -33,8 +33,8 @@ namespace Joystick_Controler {
         private void dataReceived(object s, SerialDataReceivedEventArgs e) {
             string fromPort = serialPort.ReadLine();
 
-            Console.SetCursorPosition(0, 0);
-            Console.WriteLine(fromPort);
+            //Console.SetCursorPosition(0, 0);
+            //Console.WriteLine(fromPort);
 
             int[] XY = parser(fromPort);
             int x = XY[0];
@@ -43,10 +43,10 @@ namespace Joystick_Controler {
             bool b = false;
             if (button == 0) {
                 b = true;
-                Console.WriteLine("click");
+                //Console.WriteLine("click");
             } else {
                 b = false;
-                Console.WriteLine("     ");
+                //Console.WriteLine("     ");
             }
 
             if (y == -1) {
@@ -99,7 +99,7 @@ namespace Joystick_Controler {
         }
 
         private void moveMouse() {
-            Cursor.Position = new Point(Cursor.Position.X - joyX, Cursor.Position.Y);
+            Cursor.Position = new Point(Cursor.Position.X - joyX, Cursor.Position.Y - joyY);
         }
 
         private void clickDown() {
