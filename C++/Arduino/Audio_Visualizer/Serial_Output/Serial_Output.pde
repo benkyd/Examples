@@ -7,7 +7,6 @@ Serial port;
 
 void setup() {
   size(200, 200);
-
   port = new Serial(this, "COM3", 9600);
 
   input = new AudioIn(this, 0);
