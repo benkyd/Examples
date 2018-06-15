@@ -62,6 +62,7 @@ async function update() {
 function log(message) {
   let date = new Date();
   console.log('[' + date.getFullYear() + '/' + date.getDate() + '/' + (date.getMonth() + 1) + '-' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + ']' + message);
+}
 
 /* eslint-enable */
 
