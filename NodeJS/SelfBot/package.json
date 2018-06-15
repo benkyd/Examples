@@ -1,0 +1,16 @@
+{
+  "name": "selfbot",
+  "version": "1.0.0",
+  "description": "A script to automatically change your discoed now playing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben (plane000)",
+  "license": "MIT",
+  "dependencies": {
+    "discord": "^0.8.2",
+    "discord.js": "^11.3.2",
+    "fs": "0.0.1-security"
+  }
+}
