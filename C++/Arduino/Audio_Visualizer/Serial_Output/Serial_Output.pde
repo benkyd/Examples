@@ -17,8 +17,8 @@ void setup() {
 
 void draw() {
   float vol = analyzer.analyze();
-  float normal = 10+vol*200;
-  int out = int(map(normal, 0, 60, 0, 11));
+  int out = int(map(10+vol*200, 0, 100, 0, 11));
+  println(out);
   port.write(Integer.toString(out));
   port.write(" ");
 }
