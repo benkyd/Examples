@@ -1,23 +1,34 @@
+/*
+    Author(s): Ben (plane000)#8618
+    Created: 14/06/2018
+    Last Updated: 16/06/2018
+    Last Updated by: Ben (plane000)#8618
+*/
+
 let c = document.getElementById("canv");
 let ctx = c.getContext("2d");
 
-let screenHeight = 40;
-let screenWidth = 40;
+let lost = false;
+
+let gridSize = 40;
 let grid = []; //0 = nothing, 1 = snake, 2 = apple
 
-let direction = 0; //0 = up, 1 = right, 2 = down, 3 = left 
+let direction = 3; //0 = up, 1 = right, 2 = down, 3 = left 
 
-let snakeX = 20;
-let snakeY = 20;
+let snake = [[Math.floor(Math.random() * gridSize), Math.floor(Math.random() * gridSize)]];
+let apple;
 
-window.addEventListener("keydown", onKeyDown, false);
-
-for (let i = 0; i < screenHeight; i++) {
+for (let i = 0; i < gridSize; i++) {
     grid[i] = [];
-    for (let j = 0; j < screenWidth; j++) {
+    for (let j = 0; j < gridSize; j++) {
         grid[i][j] = 0;
     }
 }
+
+window.addEventListener("keydown", onKeyDown, false);
+spawnApple();
+render();
+draw();
 
 function onKeyDown(event) {
     switch (event.key) {
@@ -40,31 +51,99 @@ function onKeyDown(event) {
     }
 }
 
-function gameLoop() {
-    for (let i = 0; i < screenHeight; i++) {
-        for (let j = 0; j < screenWidth; j++) {
-            grid[i][j] = 0;
+async function gameLoop() {
+    if (!lost) {
+        await updateSnake();
+        await checkColisions();
+        render();
+        draw();
+    } else {
+        for (let i = 0; i < gridSize; i++) {
+            for (let j = 0; j < gridSize; j++) {
+                grid[i][j] = 0;
+            }
         }
+        snake = [[Math.floor(Math.random() * gridSize), Math.floor(Math.random() * gridSize)]];
+        spawnApple();
+        render();
+        draw();
+        lost = false;
     }
-    
-    if (direction == 0) {
-        snakeY--;
-    } else if (direction == 1) {
-        snakeX++;
-    } else if (direction == 2) {
-        snakeY++;
-    } else if (direction == 3) {
-        snakeX--;
-    }
-
-    grid[snakeX][snakeY] = 1;
-
-    render();
 }
 
-function render() {
-    for (let i = 0; i < screenHeight; i++) {
-        for (let j = 0; j < screenWidth; j++) {
+function updateSnake() {
+    let newX;
+    let newY;
+    if (direction == 0) {
+        newX = snake[snake.length - 1][0];
+        newY = snake[snake.length - 1][1] - 1;
+    } else if (direction == 1) {
+        newX = snake[snake.length - 1][0] + 1;
+        newY = snake[snake.length - 1][1];
+    } else if (direction == 2) {
+        newX = snake[snake.length - 1][0];
+        newY = snake[snake.length - 1][1] + 1;
+    } else if (direction == 3) {
+        newX = snake[snake.length - 1][0] - 1;
+        newY = snake[snake.length - 1][1];
+    }
+        
+    
+    try {
+        grid[snake[0][0]][snake[0][1]] = 0;
+    } catch (e) {
+        
+    }
+    snake.push([newX, newY]);
+    snake.shift(1);
+}
+
+function checkColisions() {
+    if (apple[0] == snake[[snake.length - 1][0]][0] && apple[1] == snake[[snake.length - 1][0]][1] ) {
+        snake.push([apple[0], apple[1]]);
+        apple = [];
+        spawnApple();
+    }
+    if  (grid[snake[[snake.length - 1][0]][0]][snake[[snake.length - 1][0]][1]] == 1) {
+        lost = true;
+    }
+    if (snake[[snake.length - 1][0]][0] < 1) {
+        lost = true;
+    }
+    if (snake[[snake.length - 1][0]][0] > gridSize - 2) {
+        lost = true;
+    }
+    if (snake[[snake.length - 1][0]][1] < 1) {
+        lost = true;
+    }
+    if (snake[[snake.length - 1][0]][1] > gridSize - 1) {
+        lost = true;
+    }
+}
+
+function spawnApple() {
+    let spawned = false
+    while (!spawned) {
+        let x = Math.floor(Math.random() * gridSize);
+        let y = Math.floor(Math.random() * gridSize);
+        if (grid[x][y] != 1 && x != 0 && y != 0) {
+            apple = [x, y];
+            spawned = true;
+            break;
+        }
+    }
+}
+
+function render() {   
+    for (let s = 0; s < snake.length; s++) {
+        grid[snake[s][0]][snake[s][1]] = 1;
+    }
+    grid[apple[0]][apple[1]] = 2;
+}
+
+function draw() {
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
             if (grid[i][j] == 0) {
                 ctx.fillStyle="#FFFFF0";
             } else if (grid[i][j] == 1) {
@@ -72,7 +151,7 @@ function render() {
             } else {
                 ctx.fillStyle="#00FF00";
             }
-            ctx.fillRect(i * 10, j * 10, 400 / screenHeight, 400 / screenWidth);
+            ctx.fillRect(i * 10, j * 10, 400 / gridSize, 400 / gridSize);
         }
     }
 }
