@@ -1,0 +1,6 @@
+version: 1.0
+shards:
+  discordcr:
+    github: z64/discordcr
+    commit: 5c722de5c25a6020466e80bc10d7904a0e30e7d5
+
