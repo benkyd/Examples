@@ -36,14 +36,12 @@ function getFaces(usernames) {
                             let link = JSON.parse(Buffer.from(res.properties[0].value, 'base64').toString('ascii')).textures.SKIN.url;
                             jimp.read(link, function (err, lenna) {
                                 if (err) throw err;
-                                lenna.crop(8,8,8,8)
-                                     .resize(256, 256, jimp.RESIZE_NEAREST_NEIGHBOR)
+                                lenna.crop(8,8,8,8)  
+                                     .resize(256, jimp.AUTO, jimp.RESIZE_NEAREST_NEIGHBOR)     
                                      .write(`images/${username}.png`);
-
                                 console.log(`${username}'s skin cropped successfully`);
                             });
                         });
-
                     }).on("error", (err) => {
                         console.log(`ERROR: Couldn't get ${username}'s skin!`);
                     });
