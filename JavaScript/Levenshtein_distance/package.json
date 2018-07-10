@@ -1,0 +1,11 @@
+{
+  "name": "levenshtein-distance-finder",
+  "version": "1.0.0",
+  "description": "Implimentation of the Levenshtin distance algorithm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben (plane000)",
+  "license": "MIT"
+}
