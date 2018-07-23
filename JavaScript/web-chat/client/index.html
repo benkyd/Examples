@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>BenChat</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    </head>
+    <body>
+        <textarea name="chat" id="chat" cols="60" rows="30" readonly></textarea>
+        <input type="text" name="in" id="in" placeholder="message">
+        <input type="submit" value="Send" onclick="messagesend()">
+        <script src="main.js"></script>
+    </body>
+</html>

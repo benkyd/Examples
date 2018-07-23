@@ -8,6 +8,7 @@ let io = require('socket.io')(server);
 /* COMMUNICATION WITH ARDUINO AND CLENSING OF DATA */
 
 let lastHour = []
+let history = [];
 let temperature;
 const parser = new parsers.Readline({
     delimiter: '\r\n'
@@ -40,12 +41,12 @@ app.use('/', express.static(__dirname + '/client'));
 app.get('/', function(req, res) {  
     res.sendFile(__dirname + '/client/index.html');
 });
-app.listen(8080);
-console.log('Server listening on 80')
+app.listen(7000);
+console.log('Server listening on 8081')
 
 /* WEBSOCKETS */
 
-server.listen(8081);
+server.listen(7001);
 
 io.on('connection', (socket) => {  
     let ip = socket.request.connection.remoteAddress;
@@ -61,12 +62,18 @@ io.on('connection', (socket) => {
         socket.emit('lasthour', lastHour);
 
         setInterval(() => {
-            socket.emit('temp', temperature);
+            socket.emit('temp', [temperature, temperature * 2]);
         }, 60000);
+    });
+
+    socket.on('another', function(data) {
+        socket.emit('temp', [temperature, temperature * 2]);
     });
 });
 
 setInterval(() => {
+    history.push(temperature);
     lastHour.push(temperature);
     if (lastHour.length > 60) lastHour.splice(0,1);
+    fs.appendFileSync('client/history.csv', `${new Date().toLocaleString()},${temperature}\n`)
 }, 60000)

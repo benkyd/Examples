@@ -1,0 +1,19 @@
+body {
+    background-color: rgb(245, 245, 245);
+}
+
+textarea {
+    resize: none;
+    left: 2px;
+}
+
+input {
+    position: absolute;
+    top: 60%;
+    left: 2px;
+}
+
+input[type=text] {
+    left: 70px;
+    width: 50%;
+}

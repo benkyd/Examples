@@ -1,6 +1,6 @@
 console.log('Connecting to server')
 
-var socket = io.connect('benkyd.duckdns.org:8081');
+var socket = io.connect('benkyd.duckdns.org:7001');
 let temp = [];
 
 socket.on('connect', function(data) {
@@ -13,7 +13,8 @@ socket.on('handshake', function(data) {
 
 socket.on('temp', function(data) {
     console.log(data);
-    addPoint(data);
+    if (data[0] * 2 != data[1]) socket.emmit('another');
+    addPoint(data[0]);
 });
 
 socket.on('lasthour', function(data) {
