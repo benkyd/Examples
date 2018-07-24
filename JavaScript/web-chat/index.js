@@ -17,10 +17,6 @@ io.on('connection', (socket) => {
     console.log(`${utils.currenttime()} new client connected at ${ip}`)
 
     socket.on('outward', async function(data) {
-        if (ip == '86.11.58.84' || ip == '178.128.34.116') {
-            socket.emit('receive', 'gey lol');
-            return;
-        }
 
         // let rate = await rateLimit(socket);
         // if (rate == -1) return;

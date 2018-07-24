@@ -12,7 +12,6 @@ namespace Networking_Tools {
         public List<string> WebTools;
 
         public void Load() {
-
             DNSTools = new List<string>() {
                 "getips",
                 "getdnsend"
@@ -26,7 +25,7 @@ namespace Networking_Tools {
             Console.SetCursorPosition(0, 0);
             startHeight = Console.WindowHeight;
             startWidth = Console.WindowWidth;
-            MainMenu();       
+            MainMenu();
         }
 
         public void MainMenu() {
@@ -34,7 +33,7 @@ namespace Networking_Tools {
             Console.WriteLine("Networking Tools by Benjamin Kyd");
             Connectivity_Test test = new Connectivity_Test();
             while (true) {
-                if (test.checkConnection("www.plane000.co.uk")) {
+                if (test.checkConnection("www.google.com")) {
                     Console.Write("> ");
                     getInput();
                 } else {
@@ -46,12 +45,10 @@ namespace Networking_Tools {
         }
 
         private void getInput() { 
-            CLI_Tools cli = new CLI_Tools();
-
             var input = Console.ReadLine().Trim();
 
-            string[] parsed = cli.ParseInput(input);
-            string[] trimmed = cli.TrimFirst(parsed);
+            string[] parsed = CLI_Tools.ParseInput(input);
+            string[] trimmed = CLI_Tools.TrimFirst(parsed);
             string[] response = new string[0];
 
             switch (parsed[0]) {
@@ -78,7 +75,7 @@ namespace Networking_Tools {
                     break;
             }
 
-            cli.PrintArray(response);
+            CLI_Tools.PrintArray(response);
         }
     }
 }
