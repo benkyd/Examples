@@ -7,7 +7,7 @@ let server = require('http').createServer(app);
 let io = require('socket.io')(server);
 /* COMMUNICATION WITH ARDUINO AND CLENSING OF DATA */
 
-let lastHour = []
+let lastHour = [];
 let history = [];
 let temperature;
 const parser = new parsers.Readline({
@@ -42,7 +42,7 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/client/index.html');
 });
 app.listen(7000);
-console.log('Server listening on 8081')
+console.log('Server listening on 7000')
 
 /* WEBSOCKETS */
 
