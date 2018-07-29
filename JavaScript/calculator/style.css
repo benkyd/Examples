@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,100');
+
+body {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background: rgb(245, 245, 245);
+    font-family: 'Roboto', sans-serif;
+    color: #2f2f2f
+}
+
+.calc-container {
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px;
+    width: 400px;
+    background-color: rgb(122, 184, 255);
+    padding: 10px;
+}
+
+.calc-display {
+    width: 395px;
+    height: 70px;
+    padding-bottom: 20px;
+    resize: none;
+}
+
+.calc-item {
+    background-color: rgb(228, 228, 228);
+    border: 1px solid #2f2f2f;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+}
+  
+.calc-item:hover {
+    background-color: rgb(195, 195, 195);
+}
