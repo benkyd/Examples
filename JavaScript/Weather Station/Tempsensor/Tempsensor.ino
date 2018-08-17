@@ -16,6 +16,7 @@ void setup() {
 
 void loop() { 
   sensors.requestTemperatures();
-  Serial.println(sensors.getTempCByIndex(0));  
+  Serial.println("VALID" + String(sensors.getTempCByIndex(0)));
+  delay(100);
 }
 
