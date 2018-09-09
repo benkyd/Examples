@@ -1,0 +1,11 @@
+**HELLO AND WELCOME TO THE FIRST MICHAEL REEVES REVERSE ENGINERRING CHALLANGE**
+We decided to start off simple, see how yall'd get along with it.
+
+CTF:
+
+We have discoved an acient (but still x86 lol) excecutable file, and the key to all our doors is in it :((((
+We managed to recover a regular experssion that the key must match with, it isnt much. but it should help, it's `/ctf\{.*\}/`;
+
+
+Winners will be awareded a special role :))
+(on completeion pm the flag to @ben)
