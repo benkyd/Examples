@@ -1,0 +1,17 @@
+***HELLO AND WELCOME TO PART 2 OF THE 4 PART CTF***
+
+*you don't need to have completed part 1 to do this but in order to win you must have done all 4*
+
+CTF:
+Same deal with last time, this is a javascript safe that i cba to write a backstory for, the flag is still in the format `/ctf{.*}/`.
+
+Winners will be awarded a special role 
+On completion send the flag to Ben 
+
+**RULES:**
+
+0) DO NOT SHARE THE FLAG
+1) Use any method you see fit to solve it, if it works you reverse engeneered it :)
+
+Have fun :)))))
+
