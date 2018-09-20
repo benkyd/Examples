@@ -15,6 +15,7 @@ namespace universal_science_solver {
         }
 
         public UI() {
+            Console.Clear();
             Console.WriteLine("Loading...");
             Thread.Sleep(400);
             PhysicsControler.Initializer();
