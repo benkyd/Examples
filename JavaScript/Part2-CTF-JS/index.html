@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Professional data safe</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <script>
+            function x(g) {
+                console.log(g);
+
+                let success = 1;
+                let res = [];
+                g.split('').forEach((c) => {
+                    let i = alphabet.indexOf(c);
+                    if (i == -1) success = -1;
+                    res.push(i);
+                });
+                if (success == -1) return false;
+
+                let compare = "";
+                res.forEach((c) => {
+                    compare += c;
+                });
+
+                let result = computeChecksum(parseInt(compare));
+
+                if (result == 2.1853534282531312e+48) return true;
+                return false;
+            }
+
+            let alphabet = "abcdefghijklmnoqrstuvwxyz1234567890{}-";
+
+            function computeChecksum(num) {
+
+                num = Math.floor(Math.abs(num));
+
+                if (num < 10) {
+                    return num;
+                }
+
+                let divisor = Math.pow(10, num.toString().length);
+                let checksum = 0;
+
+                while (divisor >= 10) {
+                    let quotient = Math.floor(num / divisor);
+                    let divisorAsString = divisor.toString();
+
+                    checksum += quotient;
+                    num -= quotient * divisor;
+
+                    divisor = divisorAsString.slice(0, divisorAsString.length - 1);
+                }
+
+                return checksum + num;
+            }
+
+            function check(a) {
+                localStorage.content = "pwwd24ctf189HIhi"
+                k = document.getElementById("keyhole");
+                a = document.getElementById("access");
+                if (!x(k.value)) return a.innerHTML = "access denied"
+                a.innerHTML = "access granted"
+                password = Array.from(k.value).map(c => c.charCodeAt());
+                encrypted = localStorage.content || '';
+            }
+
+        </script>
+        password: <input id="keyhole" type="text" autofocus onchange="check()" placeholder="🔑">
+        <div id="access"></div>
+    </body>
+</html>
