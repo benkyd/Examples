@@ -7,7 +7,7 @@ namespace universal_science_solver {
         public Modes Mode = Modes.UNSELECTED;
         private bool isRunning = true;
 
-        public enum Modes : byte {
+        public enum Modes : sbyte {
             UNSELECTED,
             PHYSICS,
             CHEMISTRY,
@@ -15,20 +15,25 @@ namespace universal_science_solver {
         }
 
         public UI() {
+            Console.Clear();
             Console.WriteLine("Loading...");
             Thread.Sleep(400);
-            PhysicsControler.Initializer();
-            boot();
-            eventLoop();
+            PhysicsController.Initializer();
+            while (isRunning) {
+                boot();
+                eventLoop();
+            }
         }
 
         private void boot() {
+            Mode = Modes.UNSELECTED;
             Console.Clear();
             Console.WriteLine("The Universal Science Solver and Resolver");
             Console.WriteLine("Copyright 2018 Benjamin Kyd, Licensed under the MIT license");
             Console.WriteLine();
             Console.WriteLine("Enter q at any point to return to the menu, Ctrl+C to exit the program at any time");
             Console.WriteLine();
+            Console.WriteLine("Physics (p), chemistry (c), mathematics (m)");
         }
 
         private void eventLoop() {
@@ -39,13 +44,13 @@ namespace universal_science_solver {
                 }
 
                 if (Mode == Modes.PHYSICS) {
-
+                    PhysicsController.TakeControl();
+                    return;
                 }
             }
         }
 
         private void selectMode() {
-            Console.WriteLine("Physics (p), chemistry (c), mathematics (m)");
             Console.Write("> ");
             var key = Console.ReadKey();
             Console.WriteLine();
