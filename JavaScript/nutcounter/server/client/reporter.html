@@ -21,9 +21,9 @@
 </style>
 
 <body>
-  <h1 style="font-family:'Roboto'; font-size:64px; color:white;text-align:center">****Track Reporter</h1>
+  <h1 style="font-family:'Roboto'; font-size:64px; color:white;text-align:center">WankTrack Reporter</h1>
   <div class="centered">
-    <canvas width=300 height=300 id=cnv onmousedown="onMouse"></canvas>
+    <canvas width=300 height=300 id=cnv></canvas>
     <br>
     <input type="range" min=0 max=100 value=0 id="progress" onchange="doChange()" oninput="doInput()" >
   </div>
@@ -56,11 +56,6 @@
     }, 20);
     function doInput(){
       bar.progress = progress.value/100;
-    }
-    
-    function onMouse(e){
-      console.log("Hello");
-      bar.progress = Math.atan2(e.offsetY, e.offsetX);
     }
     
     function doChange(){
