@@ -1,0 +1,66 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>"Progress" Reporter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <script src="http://rawgit.com/kimmobrunfeldt/progressbar.js/master/dist/progressbar.min.js"></script> -->
+</head>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<style>
+  html {
+    background-color: #000034;
+  }
+
+  .centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<body>
+  <h1 style="font-family:'Roboto'; font-size:64px; color:white;text-align:center">********* Progress Reporter</h1>
+  <div class="centered">
+    <canvas width=300 height=300 id=cnv></canvas>
+    <br>
+    <input type="range" min=0 max=100 value=0 id="progress" onchange="doChange()" oninput="doInput()">
+  </div>
+</body>
+<script src="progress.js"></script>
+  <script>
+    var ctx = cnv.getContext("2d");
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 20;
+    ctx.lineCap = "round";
+
+    ctx.font = "48px Roboto";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    var bar = new ProgressBar(ctx, 25, .05);
+    bar.progress = 0;
+    setInterval(() => {
+      bar.step();
+      ctx.clearRect(0, 0, cnv.width, cnv.height);
+      ctx.fillText(Math.round(bar.progress * 100) + "%", cnv.width / 2, cnv.height / 2);
+      ctx.beginPath();
+      bar.draw();
+      ctx.stroke();
+    }, 20);
+    function doInput(){
+      bar.progress = progress.value/100;
+    } 
+    
+    function doChange(){
+      let request = new XMLHttpRequest();
+      request.open("POST", "/api/progress");
+      console.log(JSON.stringify({progress:bar.progress}));
+      request.send(JSON.stringify({progress:bar.progress}));
+    }
+  
+  </script>
+
+</html>

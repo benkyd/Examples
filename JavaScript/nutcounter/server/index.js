@@ -9,7 +9,6 @@ app.use(bodyParser.urlencoded({
 }));
 let progress = 0;
 
-console.log(process.argv);
 if (process.argv.length >= 3) {
   app.listen(parseInt(process.argv[2]));
 } else {
@@ -17,18 +16,16 @@ if (process.argv.length >= 3) {
 }
 
 app.use(express.static(__dirname + '/client'));
-app.get('/', (req, res, next) => {
-  res.status(200).sendFile('index.html');
-});
 
-app.get('/progress', (req, res, next) => {
+app.get('/api/progress', (req, res, next) => {
   res.status(200).end(JSON.stringify({
     progress: progress
   }));
 });
 
-app.post('/progress', (req, res, next) => {
-  progress = req.body.progress;
+//Wow this is broken. Child prodigy workaround deployed.
+app.post('/api/progress', (req, res, next) => {
+  progress = JSON.parse(Object.keys(req.body)[0]).progress;
   res.status(200).end(JSON.stringify({
     status: 'completed'
   }));
