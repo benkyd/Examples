@@ -23,9 +23,9 @@ app.get('/api/progress', (req, res, next) => {
   }));
 });
 
-//Wow this is broken. Child prodigy workaround deployed.
+//This is broken AF.
 app.post('/api/progress', (req, res, next) => {
-  progress = JSON.parse(Object.keys(req.body)[0]).progress;
+  progress = req.body.progress;
   res.status(200).end(JSON.stringify({
     status: 'completed'
   }));

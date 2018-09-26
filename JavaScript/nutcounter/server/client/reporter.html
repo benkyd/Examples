@@ -21,18 +21,17 @@
 </style>
 
 <body>
-  <h1 style="font-family:'Roboto'; font-size:64px; color:white;text-align:center">********* Progress Reporter</h1>
+  <h1 style="font-family:'Roboto'; font-size:64px; color:white;text-align:center">****Track Reporter</h1>
   <div class="centered">
-    <canvas width=300 height=300 id=cnv></canvas>
+    <canvas width=300 height=300 id=cnv onmousedown="onMouse"></canvas>
     <br>
-    <input type="range" min=0 max=100 value=0 id="progress" onchange="doChange()" oninput="doInput()">
+    <input type="range" min=0 max=100 value=0 id="progress" onchange="doChange()" oninput="doInput()" >
   </div>
 </body>
 <script src="progress.js"></script>
   <script>
     var ctx = cnv.getContext("2d");
     ctx.fillStyle = "white";
-    ctx.strokeStyle = "white";
     ctx.lineWidth = 20;
     ctx.lineCap = "round";
 
@@ -47,17 +46,26 @@
       ctx.clearRect(0, 0, cnv.width, cnv.height);
       ctx.fillText(Math.round(bar.progress * 100) + "%", cnv.width / 2, cnv.height / 2);
       ctx.beginPath();
+      ctx.strokeStyle = "gray";
+      bar.drawBase();
+      ctx.stroke();
+       ctx.beginPath();
+      ctx.strokeStyle = "white";
       bar.draw();
       ctx.stroke();
     }, 20);
     function doInput(){
       bar.progress = progress.value/100;
-    } 
+    }
+    
+    function onMouse(e){
+      console.log("Hello");
+      bar.progress = Math.atan2(e.offsetY, e.offsetX);
+    }
     
     function doChange(){
       let request = new XMLHttpRequest();
       request.open("POST", "/api/progress");
-      console.log(JSON.stringify({progress:bar.progress}));
       request.send(JSON.stringify({progress:bar.progress}));
     }
   

@@ -24,6 +24,10 @@ class ProgressBar {
     let start = Math.PI/-2;
     this.ctx.arc(this.canvas.width / 2, this.canvas.height / 2, radius - this.margin, start, 2 * Math.PI * this.prog + start);
   }
+  drawBase() {
+    let radius = Math.min(this.canvas.width,this.canvas.height)/2;
+    this.ctx.arc(this.canvas.width / 2, this.canvas.height / 2, radius - this.margin, 0, 2 * Math.PI);
+  }
   step() {
     if (Math.abs(this.target - this.prog) > this.stepAmt)
       this.prog += this.target > this.prog ? this.stepAmt : this.stepAmt * -1;

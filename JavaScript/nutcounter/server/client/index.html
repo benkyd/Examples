@@ -21,7 +21,7 @@
 </style>
 
 <body>
-  <h1 style="font-family:'Roboto'; font-size:72px; color:white;text-align:center">*********</h1>
+  <h1 style="font-family:'Roboto'; font-size:72px; color:white;text-align:center">****Track</h1>
   <div class="centered">
     <canvas id=cnv width=300 height=300></canvas>
   </div>
@@ -30,7 +30,6 @@
 <script>
   var ctx = cnv.getContext("2d");
   ctx.fillStyle = "white";
-  ctx.strokeStyle = "white";
   ctx.lineWidth = 20;
   ctx.lineCap = "round";
 
@@ -45,6 +44,11 @@
     ctx.clearRect(0, 0, cnv.width, cnv.height);
     ctx.fillText(Math.round(bar.progress * 100) + "%", cnv.width / 2, cnv.height / 2);
     ctx.beginPath();
+    ctx.strokeStyle = "gray";
+    bar.drawBase();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle = "white";
     bar.draw();
     ctx.stroke();
   }, 20);
@@ -56,7 +60,6 @@
     };
     request.open("GET", "/api/progress");
     request.send();
-    
   }, 1000);
 </script>
 
