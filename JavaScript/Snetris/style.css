@@ -3,7 +3,7 @@ body {
 }
 
 canvas {
-    background-color: #8D7F76;
+    background-color: #8D7F76; 
     position: absolute;
     display: block;
     margin: auto;
