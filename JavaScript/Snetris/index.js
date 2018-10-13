@@ -16,27 +16,36 @@ const APPLE_COLOUR = '#2CC427';
 /*<==== CLASS STRUCTURES ====>*/
 class Apple {
     constructor() {
-
+        this.pos = { };
+        while (true) {
+            this.pos.x = Math.floor((Math.random() * GAME_SIZE.x - 1) + 1);
+            this.pos.y = Math.floor((Math.random() * GAME_SIZE.y / 2) + 1);
+            if (this.pos.x == 0 || this.pos.x == 1) {
+                // Checks to make sure it doesnt spawn anywhere illegal
+            } else {
+                break;
+            }
+        }
     }
-
-    spawn() {
-
-    }
-
+    
     update() {
-
+        
+    }
+    
+    draw() {
+        GameGrid[this.pos.x][this.pos.y] = 2;
     }
 }
 
 class Snake {
     constructor() {
-        this.tail = [{x: 0, y: 0}, {x: -1, y: 0}, {x: -2, y: 0}, {x: -3, y: 0}, {x: -4, y: 0}];
+        this.tail = [{x: 1, y: 0}, {x: 0, y: 0}, {x: -1, y: 0}, {x: -2, y: 0}];
         this.lastRemoved = {x: 1, y: 1};
         this.direction = 1; // 0 = up, 1 = right, 2 = down, 3 = left
     }
 
     update() {        
-        let newPos = {}
+        let newPos = { };
         newPos.x = this.tail[0].x;
         newPos.y = this.tail[0].y;
 
@@ -49,7 +58,19 @@ class Snake {
         } else {
             newPos.x = this.tail[0].x - 1;           
         }
-        
+
+        if (newPos.x + 1 < 0) {
+            newPos.x = GAME_SIZE.x - 1; 
+        } else if (newPos.x > GAME_SIZE.x - 1) {
+            newPos.x = 0; 
+        }
+
+        if (newPos.y + 1 < 0) {
+            newPos.y = GAME_SIZE.y - 1; 
+        } else if (newPos.y > GAME_SIZE.y - 1) {
+            newPos.y = 0; 
+        }
+
         this.lastRemoved = this.tail.pop();
         let newTail = [ ];
         newTail.push(newPos);
@@ -59,16 +80,14 @@ class Snake {
         }
 
         this.tail = newTail;
+        console.log('HEAD: ', this.tail[0]);
     }
 
     draw() {
         for (let i = 0; i < this.tail.length; i++) {
             if (this.tail[i].x < 0 || this.tail[i].y < 0 || this.tail[i].x > GAME_SIZE.x || this.tail[i].y > GAME_SIZE.y) {} else {
                 GameGrid[this.tail[i].x][this.tail[i].y] = 1;
-            }
-        }
-        if (this.lastRemoved.x < 0 || this.lastRemoved.y < 0 || this.lastRemoved.x > GAME_SIZE.x || this.lastRemoved.y > GAME_SIZE.y) {} else {
-            GameGrid[this.lastRemoved.x][this.lastRemoved.y] = 0;
+            } 
         }
     }
 }
@@ -98,8 +117,11 @@ function Stop() {
 }
 function gameLoop() {
     if (!stop) {
+        clear();
         ActiveSnake.update();
+        ActiveApple.update();
         ActiveSnake.draw();
+        ActiveApple.draw();
         draw();
     }
 }
@@ -129,6 +151,12 @@ function draw() {
             // ctx.stroke();
         }
     }
+}
+
+function clear() {
+    for (let i = 0; i < GAME_SIZE.x; i++)
+        for (let j = 0; j < GAME_SIZE.y; j++)
+            GameGrid[i][j] = 0;
 }
 
 function handleKeyDown(event) {
