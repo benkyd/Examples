@@ -145,10 +145,6 @@ function draw() {
             } else {
                 ctx.fillRect(i * BLOCK_SIZE.x + BLOCK_SIZE.x / 3, j * BLOCK_SIZE.y + BLOCK_SIZE.y / 3, BLOCK_SIZE.x / 3, BLOCK_SIZE.y / 3);
             }
-            // Debug for drawing squares
-            // ctx.fillStyle = '#FFFFFF';
-            // ctx.rect(i * BLOCK_SIZE.x, j * BLOCK_SIZE.y, BLOCK_SIZE.x, BLOCK_SIZE.y);
-            // ctx.stroke();
         }
     }
 }
