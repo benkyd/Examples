@@ -18,4 +18,3 @@ void loop() {
   sensors.requestTemperatures();
   Serial.println(sensors.getTempCByIndex(0));  
 }
-

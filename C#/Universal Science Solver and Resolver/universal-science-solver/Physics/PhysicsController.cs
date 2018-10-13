@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace universal_science_solver.Physics {
     class PhysicsController {
         public enum Topic : byte {
-            USELECTED,
+            USELECTED, 
             BASICS,
             MECHANICS,
             WAVES

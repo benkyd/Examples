@@ -1,4 +1,3 @@
-#include <Mouse.h>
 #include <Keyboard.h>
 
 void setup() {
@@ -22,4 +21,3 @@ void setup() {
 }
 
 void loop() {}
-

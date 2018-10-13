@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace universal_science_solver.Physics {
     class BasicPhysics {
         public static void SpeedDistanceTime() {
-            Console.WriteLine("Calculate distance, speed or time");
+            Console.WriteLine("Calculate distance (d), speed (s) or time (t)");
 
             
         }
