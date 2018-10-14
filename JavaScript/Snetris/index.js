@@ -8,6 +8,7 @@ const BLOCK_SIZE = {x: CANVAS_SIZE.x / GAME_SIZE.x, y: CANVAS_SIZE.y / GAME_SIZE
 
 const GAME_STATE = 0; // 0 = playing, 1 = lost
 const UPDATE_RATE = 5; // updates per second
+const ANIMATE_RATE = 60; // updates per second
 
 const BACKGROUND_COLOUR = '#8D7F76';
 const SNAKE_COLOUR = '#B62946';
@@ -29,7 +30,10 @@ class Apple {
     }
     
     update() {
-        
+        if (ActiveSnake.head.x == this.pos.x && ActiveSnake.head.y == this.pos.y) {
+            // freeze snake and return state
+            return 'collide';
+        }
     }
     
     draw() {
@@ -40,23 +44,24 @@ class Apple {
 class Snake {
     constructor() {
         this.tail = [{x: 1, y: 0}, {x: 0, y: 0}, {x: -1, y: 0}, {x: -2, y: 0}];
-        this.lastRemoved = {x: 1, y: 1};
+        this.head = {x: 1, y: 0};
         this.direction = 1; // 0 = up, 1 = right, 2 = down, 3 = left
+        this.frozen = false;
     }
 
     update() {        
         let newPos = { };
-        newPos.x = this.tail[0].x;
-        newPos.y = this.tail[0].y;
+        newPos.x = this.head.x;
+        newPos.y = this.head.y;
 
         if (this.direction == 0) {
-            newPos.y = this.tail[0].y - 1;
+            newPos.y = this.head.y - 1;
         } else if (this.direction == 1) {
-            newPos.x = this.tail[0].x + 1;
+            newPos.x = this.head.x + 1;
         } else if (this.direction == 2) {
-            newPos.y = this.tail[0].y + 1;
+            newPos.y = this.head.y + 1;
         } else {
-            newPos.x = this.tail[0].x - 1;           
+            newPos.x = this.head.x - 1;           
         }
 
         if (newPos.x + 1 < 0) {
@@ -71,7 +76,7 @@ class Snake {
             newPos.y = 0; 
         }
 
-        this.lastRemoved = this.tail.pop();
+        this.tail.pop();
         let newTail = [ ];
         newTail.push(newPos);
 
@@ -80,12 +85,13 @@ class Snake {
         }
 
         this.tail = newTail;
-        console.log('HEAD: ', this.tail[0]);
+        this.head = this.tail[0];
     }
 
     draw() {
         for (let i = 0; i < this.tail.length; i++) {
-            if (this.tail[i].x < 0 || this.tail[i].y < 0 || this.tail[i].x > GAME_SIZE.x || this.tail[i].y > GAME_SIZE.y) {} else {
+            if (this.tail[i].x < 0 || this.tail[i].y < 0 || this.tail[i].x > GAME_SIZE.x || this.tail[i].y > GAME_SIZE.y) { 
+            } else {
                 GameGrid[this.tail[i].x][this.tail[i].y] = 1;
             } 
         }
@@ -93,8 +99,12 @@ class Snake {
 }
 
 class Block {
-    constructor(x, y) {
-        this.pos = {x: x, y: y}
+    constructor(tail) {
+        this.blocks = tail;
+        this.falling = true;
+        this.pixelPos;
+        this.targetGamePos;
+        this.targetPixelPos;
     }
 }
 
@@ -107,23 +117,43 @@ for (let i = 0; i < GAME_SIZE.x; i++) {
     }
 }
 
+let Blocks = [ ];
 let ActiveSnake = new Snake();
 let ActiveApple = new Apple();
 
 /*<==== GAME LOGIC AND EVENT HANDLING ====>*/
 let stop = false;
-function Stop() {
-    stop = true;
-}
+
 function gameLoop() {
     if (!stop) {
         clear();
-        ActiveSnake.update();
-        ActiveApple.update();
+        if (ActiveSnake.frozen == false) {
+            ActiveSnake.update();
+        }
+
+        let didColide = ActiveApple.update();
+        if (didColide == 'collide') {
+            Blocks.push(new Block(ActiveSnake.tail));
+            ActiveApple = new Apple();
+            ActiveSnake = new Snake();
+        }
+        
         ActiveSnake.draw();
         ActiveApple.draw();
         draw();
     }
+}
+
+function animationLoop() {
+    if (ActiveSnake.frozen) {
+        console.log('FALLING');
+        
+        drawAnimation();
+    }
+}
+
+function drawAnimation() {
+    
 }
 
 function draw() {
@@ -178,3 +208,4 @@ function handleKeyDown(event) {
 
 window.addEventListener('keydown', handleKeyDown);
 setInterval(gameLoop, 1000 / UPDATE_RATE);
+setInterval(animationLoop, 1000 / ANIMATE_RATE);
