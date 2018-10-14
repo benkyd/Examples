@@ -123,7 +123,6 @@ let ActiveApple = new Apple();
 
 /*<==== GAME LOGIC AND EVENT HANDLING ====>*/
 let stop = false;
-
 function gameLoop() {
     if (!stop) {
         clear();
@@ -145,10 +144,9 @@ function gameLoop() {
 }
 
 function animationLoop() {
-    if (ActiveSnake.frozen) {
-        console.log('FALLING');
-        
-        drawAnimation();
+    if (!stop) {
+        // loop through Boxes and if a box is in the falling
+        // state, then apply animation
     }
 }
 
