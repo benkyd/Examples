@@ -118,6 +118,7 @@ class Block {
         }
         if (this.pixelPos.y >= this.targetPixelPos.y) {
             this.falling = false;
+            this.velocity = 0;
             this.pixelPos.y = this.targetPixelPos.y;
         }
 
@@ -142,17 +143,24 @@ class Block {
 }
 
 /*<==== GAME INITIALIZATION ====>*/
-let GameGrid = [ ]; // 0 = empty, 1 = snake, 2 = apple
-for (let i = 0; i < GAME_SIZE.x; i++) {
-    GameGrid[i] = [ ];
-    for (let j = 0; j < GAME_SIZE.y; j++) {
-        GameGrid[i][j] = 0;
-    }
-}
+let GameGrid;
+let Blocks;
+let ActiveSnake;
+let ActiveApple;
 
-let Blocks = [ ];
-let ActiveSnake = new Snake();
-let ActiveApple = new Apple();
+function setup() {
+    GameGrid = [ ]; // 0 = empty, 1 = snake, 2 = apple
+    for (let i = 0; i < GAME_SIZE.x; i++) {
+        GameGrid[i] = [ ];
+        for (let j = 0; j < GAME_SIZE.y; j++) {
+            GameGrid[i][j] = 0;
+        }
+    }
+    
+    Blocks = [ ];
+    ActiveSnake = new Snake();
+    ActiveApple = new Apple();
+}
 
 /*<==== GAME LOGIC AND EVENT HANDLING ====>*/
 let stop = false;
@@ -242,6 +250,7 @@ function handleKeyDown(event) {
     }
 }
 
+setup();
 window.addEventListener('keydown', handleKeyDown);
 setInterval(gameLoop, 1000 / UPDATE_RATE);
 setInterval(animationLoop, 1000 / ANIMATE_RATE);
