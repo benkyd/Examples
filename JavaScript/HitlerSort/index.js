@@ -46,3 +46,13 @@ console.log(Sort.HitlerSort([1, 2, 3, 4, 5, 1, 3, 5, 6]));
 console.log(Sort.HitlerSort([5, 6, 3, 1, 4, 7, 6, 5, 1]));
 console.log(Sort.HitlerSort([6, 3, 3, 4, 7, 1, 3, 2, 5]));
 console.log(Sort.HitlerSort([1, 9, 8, 4, 4, 2, 8, 2, 3]));
+
+console.log(Sort.BubbleSort([1, 2, 3, 4, 5, 1, 3, 5, 6]));
+console.log(Sort.BubbleSort([5, 6, 3, 1, 4, 7, 6, 5, 1]));
+console.log(Sort.BubbleSort([6, 3, 3, 4, 7, 1, 3, 2, 5]));
+console.log(Sort.BubbleSort([1, 9, 8, 4, 4, 2, 8, 2, 3]));
+
+console.log(Sort.QuickSort([1, 2, 3, 4, 5, 1, 3, 5, 6]));
+console.log(Sort.QuickSort([5, 6, 3, 1, 4, 7, 6, 5, 1]));
+console.log(Sort.QuickSort([6, 3, 3, 4, 7, 1, 3, 2, 5]));
+console.log(Sort.QuickSort([1, 9, 8, 4, 4, 2, 8, 2, 3]));
