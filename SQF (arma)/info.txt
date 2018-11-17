@@ -1,0 +1,11 @@
+Default Scripts - built into arma https://community.bistudio.com/wiki/Category:Arma_3:_Functions
+Scripting Commands - used in coding https://community.bistudio.com/wiki/Category:Scripting_Commands_Arma_3
+Required scripts for a server https://community.bistudio.com/wiki/Event_Scripts
+Triggered Scripts - Event Handlers https://community.bistudio.com/wiki/Arma_3:_Event_Handlers
+Triggered UI Scripts - DisplayEventHandlers https://community.bistudio.com/wiki/User_Interface_Event_Handlers
+Server Boot Order https://community.bistudio.com/wiki/Initialization_Order
+Default Arma Sounds https://community.bistudio.com/wiki/Arma_3:_SoundFiles
+Default Altis Life Framework https://github.com/AsYetUntitled/Framework
+
+<20:16:43> "Harry Lewis": so developing for a server like this, best to get used to the language and how it works by making some little scripts in the game
+<20:17:20> "Harry Lewis": we use a LOT of functional programming, and configs e.t.c  - so learn how the game handles execution of functions
