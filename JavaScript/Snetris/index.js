@@ -31,7 +31,6 @@ class Apple {
     
     update() {
         if (ActiveSnake.head.x == this.pos.x && ActiveSnake.head.y == this.pos.y) {
-            // freeze snake and return state
             return 'collide';
         }
     }
@@ -102,24 +101,66 @@ class Block {
     constructor(tail) {
         this.blocks = tail;
         this.falling = true;
-        this.pixelPos;
-        this.targetGamePos;
-        this.targetPixelPos;
+        this.pixelPos = {x: tail[0].x * BLOCK_SIZE.x, y: tail[0].y * BLOCK_SIZE.y};
+        this.lastPixelPos = {x: 0, y: 0};
+        this.targetGamePos = {x: 6, y: 11};
+        this.targetPixelPos = {x: 6 * BLOCK_SIZE.x, y: 11 * BLOCK_SIZE.y};
+    
+        this.velocity = 0;
+        this.gravity = 5.81;
+    }
+
+    fall() {
+        this.lastPixelPos = this.pixelPos;
+        if (this.falling) {
+            this.velocity += this.gravity;
+            this.pixelPos.y += this.velocity;
+        }
+        if (this.pixelPos.y >= this.targetPixelPos.y) {
+            this.falling = false;
+            this.velocity = 0;
+            this.pixelPos.y = this.targetPixelPos.y;
+        }
+
+        // for (peice of this.blocks) {
+
+        // }
+    }
+
+    draw() {
+        if (this.falling) {
+            ctx.fillStyle = BACKGROUND_COLOUR;
+            ctx.fillRect(this.lastPixelPos.x, this.lastPixelPos.y, BLOCK_SIZE.x, BLOCK_SIZE.y);
+            ctx.fillStyle = SNAKE_COLOUR;
+            ctx.fillRect(this.pixelPos.x, this.pixelPos.y, BLOCK_SIZE.x, BLOCK_SIZE.y);
+        } else {
+            GameGrid[this.targetGamePos.x][this.targetGamePos.y] = 1;
+            // for (let i = 0; i < this.tail.length; i++) {
+            //     GameGrid[this.tail[i].x][this.tail[i].y] = 1;
+            // }
+        }
     }
 }
 
 /*<==== GAME INITIALIZATION ====>*/
-let GameGrid = [ ]; // 0 = empty, 1 = snake, 2 = apple
-for (let i = 0; i < GAME_SIZE.x; i++) {
-    GameGrid[i] = [ ];
-    for (let j = 0; j < GAME_SIZE.y; j++) {
-        GameGrid[i][j] = 0;
-    }
-}
+let GameGrid;
+let Blocks;
+let ActiveSnake;
+let ActiveApple;
 
-let Blocks = [ ];
-let ActiveSnake = new Snake();
-let ActiveApple = new Apple();
+function setup() {
+    GameGrid = [ ]; // 0 = empty, 1 = snake, 2 = apple
+    for (let i = 0; i < GAME_SIZE.x; i++) {
+        GameGrid[i] = [ ];
+        for (let j = 0; j < GAME_SIZE.y; j++) {
+            GameGrid[i][j] = 0;
+        }
+    }
+    
+    Blocks = [ ];
+    ActiveSnake = new Snake();
+    ActiveApple = new Apple();
+}
 
 /*<==== GAME LOGIC AND EVENT HANDLING ====>*/
 let stop = false;
@@ -136,7 +177,12 @@ function gameLoop() {
             ActiveApple = new Apple();
             ActiveSnake = new Snake();
         }
-        
+
+        for (block of Blocks) {
+            if (!block.falling) {
+                block.draw();
+            }
+        }
         ActiveSnake.draw();
         ActiveApple.draw();
         draw();
@@ -145,13 +191,13 @@ function gameLoop() {
 
 function animationLoop() {
     if (!stop) {
-        // loop through Boxes and if a box is in the falling
-        // state, then apply animation
+        for (block of Blocks) {
+            if (block.falling) {
+                block.fall();
+                block.draw();
+            }
+        }
     }
-}
-
-function drawAnimation() {
-    
 }
 
 function draw() {
@@ -204,6 +250,7 @@ function handleKeyDown(event) {
     }
 }
 
+setup();
 window.addEventListener('keydown', handleKeyDown);
 setInterval(gameLoop, 1000 / UPDATE_RATE);
 setInterval(animationLoop, 1000 / ANIMATE_RATE);
