@@ -1,35 +1,36 @@
+#include <string>
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <string>
 
-// std::vector<std::string> parseFile(std::string fileName) {
-//     std::cout << "test1" << fileName << std::endl;
+bool isRepeat(std::string line, int repeats) {
+    for (char c = 'a'; c <= 'z'; ++c) {
+        int count = 0;
+        for (size_t i = 0; i < line.size(); ++i) {
+	    if (line[i] == c)
+                ++count;
+        }
+	if (count == repeats)
+	    return true;
+    }
+    return false;
+}
 
-//     std::vector<std::string> output;
-//     std::cout << "test2" << fileName << std::endl;
-
-//     std::fstream stream(fileName);
-//     std::cout << "Reading: " << fileName << " into array" << std::endl;
-    
-//     for (std::string line; std::getline(stream, line); )
-//         output.push_back(line);
-//     return output;
-// }
+int checkSum(std::string fileName) {
+    std::fstream input(fileName);
+    std::string line;
+    int doubles = 0;
+    int triples = 0;
+	
+    while (!input.eof()) {
+        std::getline(input, line);
+        if (isRepeat(line, 2))
+            ++doubles;
+        if (isRepeat(line, 3))
+            ++triples;
+    }
+    return doubles * triples;
+}
 
 int main(int argc, char** argv) {
-    try {
-        std::cout << "WTF WHY ISNT THIS OUTPUTTING" << std::endl;
-
-        std::vector<std::string> lines; // = parseFile("input.txt");// *(argv + 1));
-        std::fstream stream("input.txt");
-
-        // std::string line;
-        // for (std::string line; std::getline(stream, line); ) {}
-        //     lines.push_back(line);
-        // for (unsigned int i = 0; i < lines.size(); i++)
-        //     std::cout << lines[i] << std::endl;
-    } catch (const std::string &e) {
-        std::cout << e << std::endl;
-    }
+    std::cout << "Found: " << checkSum("input.txt") << std::endl;
 }
