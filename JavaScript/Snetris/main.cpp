@@ -1,0 +1,10 @@
+
+
+
+
+int *ptr=nullptr;
+
+
+
+
+
