@@ -42,6 +42,7 @@ bool loadShader(std::string shaderSource, GLenum type, std::string shader) {
         }
 
         VertexShaders[shader] = vertexShader;
+        std::cout << "Vertex shader at '" << shader << "' compiled..." << std::endl;
     } else if (type == GL_FRAGMENT_SHADER) {
         GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, 1, &source, NULL);
@@ -57,6 +58,7 @@ bool loadShader(std::string shaderSource, GLenum type, std::string shader) {
         }
 
         FragmentShaders[shader] = fragmentShader;
+        std::cout << "Fragment shader at '" << shader << "' compiled..." << std::endl;
     }
     return true;
 }
@@ -66,21 +68,13 @@ void makeShaderProgram(std::string vert, std::string frag, std::string program) 
     glAttachShader(shaderProgram, VertexShaders[vert]);
     glAttachShader(shaderProgram, FragmentShaders[frag]);
     ShaderPrograms[program] = shaderProgram;
-}
-
-void applySimpleShaders(std::string program) {
-    glBindFragDataLocation(ShaderPrograms[program], 0, "outColour");
-    GLint posAttrib = glGetAttribLocation(ShaderPrograms[program], "position");
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(posAttrib);
-}
-
-void linkShader(std::string shader) {
-    glLinkProgram(ShaderPrograms[shader]);
+    std::cout << "Shader program '" << program << "' created" << std::endl;
 }
 
 void applyShader(std::string shader) {
+    glLinkProgram(ShaderPrograms[shader]);
     glUseProgram(ShaderPrograms[shader]);
+    std::cout << "Shader program '" << shader << "' applied" << std::endl;
 }
 
 int main(int argc, char** argv) {
@@ -137,13 +131,17 @@ int main(int argc, char** argv) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(verticies), verticies, GL_STATIC_DRAW);
 
     // Load, compile, apply and link shader programs
-    if (!loadShader(readShader("shaders/simple.frag"), GL_FRAGMENT_SHADER, "simpleFrag") ||
-        !loadShader(readShader("shaders/simple.vert"), GL_VERTEX_SHADER  , "simpleVert")) {
+    if (!loadShader(readShader("shaders/simple.vert"), GL_VERTEX_SHADER  , "simpleVert") ||
+        !loadShader(readShader("shaders/simple.frag"), GL_FRAGMENT_SHADER, "simpleFrag")) {
         return 0;
     }
     makeShaderProgram("simpleVert", "simpleFrag", "simpleProc");
-    applySimpleShaders("simpleProc");
-    linkShader("simpleProc");
+    glBindFragDataLocation(ShaderPrograms["simpleProc"], 0, "outColor");
+    applyShader("simpleProc");
+
+    GLint posAttrib = glGetAttribLocation(ShaderPrograms["simpleProc"], "position");
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(posAttrib);
 
     SDL_Event event;
     while (!game->isWindowClosed) {
@@ -153,10 +151,11 @@ int main(int argc, char** argv) {
                 game->isWindowClosed = true;
 
         // Render
-        glClear(GL_COLOR_BUFFER_BIT);
-        applyShader("simpleProc");
-        glDrawArrays(GL_TRIANGLES, 0, 3);
 
+        // Clear the screen
+        glClear(GL_COLOR_BUFFER_BIT);
+        // Draw a triangle from the 3 vertices
+        glDrawArrays(GL_TRIANGLES, 0, 3);
         // Swap buffers
         SDL_GL_SwapWindow(game->window);
     }
