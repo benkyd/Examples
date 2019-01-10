@@ -129,7 +129,7 @@ int main(int argc, char** argv) {
     // Binding buffer to GPU
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     // Copy vertex data to the vertex buffer already on the GPU
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * 3, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * 6, vertices, GL_STATIC_DRAW);
 
     // Load, compile, apply and link shader programs
     if (!loadShader(readShader("shaders/simple.vert"), GL_VERTEX_SHADER  , "simpleVert") ||
