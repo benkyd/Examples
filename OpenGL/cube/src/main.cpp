@@ -20,12 +20,13 @@ std::map<std::string, GLuint> ShaderPrograms;
 std::string readShader(std::string source) {
     std::ifstream t(source);
     std::string shaderCode((std::istreambuf_iterator<char>(t)),
-                    std::istreambuf_iterator<char>());
+                            std::istreambuf_iterator<char>());
+    // std::cout << shaderCode << std::endl;
     return shaderCode;
 }
 
 bool loadShader(std::string shaderSource, GLenum type, std::string shader) {
-    const char* source = shader.c_str();
+    const char* source = shaderSource.c_str();
 
     if (type == GL_VERTEX_SHADER) {
         GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -34,7 +35,7 @@ bool loadShader(std::string shaderSource, GLenum type, std::string shader) {
 
         GLint status;
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
-        if (status == GL_TRUE) {
+        if (status == GL_FALSE) {
             char buf[512];
             glGetShaderInfoLog(vertexShader, 512, NULL, buf);
             std::cerr << buf << std::endl;
@@ -50,7 +51,7 @@ bool loadShader(std::string shaderSource, GLenum type, std::string shader) {
 
         GLint status;
         glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
-        if (status == GL_TRUE) {
+        if (status == GL_FALSE) {
             char buf[512];
             glGetShaderInfoLog(fragmentShader, 512, NULL, buf);
             std::cerr << buf << std::endl;
@@ -110,7 +111,7 @@ int main(int argc, char** argv) {
     glClearColor(0.1f, 0.45f, 0.9f, 1.0f);
 
     // GL Screen coordinates of a 2D triangle
-    float verticies[] = {
+    float vertices[] = {
          0.0f,  0.5f, // Vertex 1 (X, Y)
          0.5f, -0.5f, // Vertex 2 (X, Y)
         -0.5f, -0.5f  // Vertex 3 (X, Y)
@@ -128,7 +129,7 @@ int main(int argc, char** argv) {
     // Binding buffer to GPU
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     // Copy vertex data to the vertex buffer already on the GPU
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verticies), verticies, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * 3, vertices, GL_STATIC_DRAW);
 
     // Load, compile, apply and link shader programs
     if (!loadShader(readShader("shaders/simple.vert"), GL_VERTEX_SHADER  , "simpleVert") ||
