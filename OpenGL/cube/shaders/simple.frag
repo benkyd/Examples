@@ -1,7 +1,10 @@
-#version 150 core
+#version 130
 
-out vec4 outColor;
+in vec3 Colour;
+out vec4 outColour;
+
+uniform vec3 triangleColour;
 
 void main() {
-    outColor = vec4(1.0, 1.0, 1.0, 1.0);
+    outColour = vec4(Colour, 1.0);
 }

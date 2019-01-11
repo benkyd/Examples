@@ -3,8 +3,22 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <fstream>
+#include <chrono>
 #include <string>
 #include <map>
+
+void GLAPIENTRY MessageCallback(GLenum source,
+                                GLenum type,
+                                GLuint id,
+                                GLenum severity,
+                                GLsizei length,
+                                const GLchar* message,
+                                const void* userParam) {
+  fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+           (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
+            type, severity, message);
+}
+
 
 class Game {
 public:
@@ -108,13 +122,19 @@ int main(int argc, char** argv) {
 
     game->isWindowClosed = false;
 
+    // Set GL error handling callback
+    // glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback(MessageCallback, 0);
+
+    // Set GL clear colour (light blue)
     glClearColor(0.1f, 0.45f, 0.9f, 1.0f);
 
-    // GL Screen coordinates of a 2D triangle
+    // GL Screen coordinates of a 2D triangle followed by the colour
+    GLint numOfVerticies = 15;
     float vertices[] = {
-         0.0f,  0.5f, // Vertex 1 (X, Y)
-         0.5f, -0.5f, // Vertex 2 (X, Y)
-        -0.5f, -0.5f  // Vertex 3 (X, Y)
+        0.0f,  0.5f,    1.0f, 0.0f, 0.0f, // Vertex 1: (X, Y,  R, G, B)
+        0.5f, -0.5f,    0.0f, 1.0f, 0.0f, // Vertex 2: (X, Y,  R, G, B)
+       -0.5f, -0.5f,    0.0f, 0.0f, 1.0f  // Vertex 3: (X, Y,  R, G, B)
     };
 
     // Generate a vertex array object
@@ -129,7 +149,7 @@ int main(int argc, char** argv) {
     // Binding buffer to GPU
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     // Copy vertex data to the vertex buffer already on the GPU
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * 6, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * numOfVerticies, vertices, GL_STATIC_DRAW);
 
     // Load, compile, apply and link shader programs
     if (!loadShader(readShader("shaders/simple.vert"), GL_VERTEX_SHADER  , "simpleVert") ||
@@ -137,21 +157,27 @@ int main(int argc, char** argv) {
         return 0;
     }
     makeShaderProgram("simpleVert", "simpleFrag", "simpleProc");
-    glBindFragDataLocation(ShaderPrograms["simpleProc"], 0, "outColor");
     applyShader("simpleProc");
 
     GLint posAttrib = glGetAttribLocation(ShaderPrograms["simpleProc"], "position");
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(posAttrib);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
+                        5*sizeof(float), 0);
+
+    GLint colAttrib = glGetAttribLocation(ShaderPrograms["simpleProc"], "colour");
+    glEnableVertexAttribArray(colAttrib);
+    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
+                        5*sizeof(float), (void*)(2*sizeof(float)));
+
+    GLint triangleUniColour = glGetUniformLocation(ShaderPrograms["simpleProc"], "triangleColour");
+    glUniform3f(triangleUniColour, 0.2f, 0.8f, 0.3f);
 
     SDL_Event event;
     while (!game->isWindowClosed) {
         // Input handling
         while (SDL_PollEvent(&event) != 0)
-            if (event.key.keysym.sym == SDLK_ESCAPE) 
+            if (event.key.keysym.sym == SDLK_ESCAPE || event.type == SDL_QUIT) 
                 game->isWindowClosed = true;
-
-        // Render
 
         // Clear the screen
         glClear(GL_COLOR_BUFFER_BIT);
