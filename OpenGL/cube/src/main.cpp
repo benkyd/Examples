@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <fstream>
@@ -44,7 +45,7 @@ int main(int argc, char** argv) {
 	game->window = SDL_CreateWindow("GL CUBE", 
                                     SDL_WINDOWPOS_CENTERED, 
                                     SDL_WINDOWPOS_CENTERED, 
-                                    400, 400, 
+                                    1000, 1000, 
                                     SDL_WINDOW_OPENGL);
 	game->glContext = SDL_GL_CreateContext(game->window);
 
@@ -66,12 +67,20 @@ int main(int argc, char** argv) {
     // Set GL clear colour (light blue)
     glClearColor(0.1f, 0.45f, 0.9f, 1.0f);
 
-    // GL Screen coordinates of a 2D triangle followed by the colour
-    GLint numOfVerticies = 15;
+    // GL Screen coordinates of a 2D triangle followed by the colour and the texture coordinates
+    GLint numOfVerticies = 28;
     float vertices[] = {
-        0.0f,  0.5f,    1.0f, 0.0f, 0.0f, // Vertex 1: (X, Y,  R, G, B)
-        0.5f, -0.5f,    0.0f, 1.0f, 0.0f, // Vertex 2: (X, Y,  R, G, B)
-       -0.5f, -0.5f,    0.0f, 0.0f, 1.0f  // Vertex 3: (X, Y,  R, G, B)
+    //  Positions       Colour               Texture 
+       -0.5f,  0.5f,    1.0f, 0.0f, 0.0f,    0.0f, 0.0f, // Top-left
+        0.5f,  0.5f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f, // Top-right
+        0.5f, -0.5f,    0.0f, 0.0f, 1.0f,    1.0f, 1.0f, // Bottom-right
+       -0.5f, -0.5f,    1.0f, 1.0f, 1.0f,    0.0f, 1.0f, // Bottom-left
+    };
+
+    // Element array - order of verticies drawn
+    GLuint elements[] = {
+        0, 1, 2,
+        2, 3, 0
     };
 
     // Generate a vertex array object
@@ -83,24 +92,48 @@ int main(int argc, char** argv) {
     // Generate a vertex buffer object
     GLuint vbo;
     glGenBuffers(1, &vbo);
-    // Binding buffer to GPU
+    // Bind buffer to the GPU
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     // Copy vertex data to the vertex buffer already on the GPU
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * numOfVerticies, vertices, GL_STATIC_DRAW);
 
+    // Generate another vertex buffer for the element array buffer
+    GLuint ebo;
+    glGenBuffers(1, &ebo);
+    // Bind buffer to the GPU
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    // Copy buffer data to the buffer already on the GPU
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+
     // Load, compile, apply and link shader programs
     Shader simpleShader;
-    simpleShader.load("./shaders/simple").attatch().link().use();
+    simpleShader.load("./resources/shaders/simple").attatch().link().use();
+
+    // Load texture from file
+    SDL_Surface* sur = IMG_Load("./resources/textures/dirtside.jpg");
+    // Set up a GL texture
+    GLuint tex;
+    glBindTexture(GL_TEXTURE_2D, tex);
+    // it won't work without this idk why yet
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    // Passes SDL texture into the texture buffer for GL to use in shaders
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, sur->w, sur->h, 0, GL_RGB, GL_UNSIGNED_BYTE, sur->pixels);
 
     GLint posAttrib = glGetAttribLocation(simpleShader.getProgram(), "position");
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
-                        5*sizeof(float), 0);
+                        7*sizeof(float), 0);
 
     GLint colAttrib = glGetAttribLocation(simpleShader.getProgram(), "colour");
     glEnableVertexAttribArray(colAttrib);
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
-                        5*sizeof(float), (void*)(2*sizeof(float)));
+                        7*sizeof(float), (void*)(2*sizeof(float)));
+
+    GLint texAttrib = glGetAttribLocation(simpleShader.getProgram(), "texcoord");
+    glEnableVertexAttribArray(texAttrib);
+    glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE,
+                       7*sizeof(float), (void*)(5*sizeof(float)));
 
     GLint triangleUniColour = glGetUniformLocation(simpleShader.getProgram(), "triangleColour");
     glUniform3f(triangleUniColour, 0.2f, 0.8f, 0.3f);
@@ -115,13 +148,12 @@ int main(int argc, char** argv) {
         // Clear the screen
         glClear(GL_COLOR_BUFFER_BIT);
         // Draw a triangle from the 3 vertices
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         // Swap buffers
         SDL_GL_SwapWindow(game->window);
     }
 
 	game->isWindowClosed = true;
-    simpleShader.~Shader();
     SDL_GL_DeleteContext(game->glContext);
 	SDL_DestroyWindow(game->window);
 	SDL_Quit();
