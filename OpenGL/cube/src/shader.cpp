@@ -34,38 +34,37 @@ Shader& Shader::load(GLenum type, std::string sourceLoc) {
     const char* source = readShader(sourceLoc).c_str();
 
     if (type == GL_VERTEX_SHADER) {
-        GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, 1, &source, NULL);
-        glCompileShader(vertexShader);
-
-        glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &m_status);
-        if (m_status == GL_FALSE) {
-            char buf[512];
-            glGetShaderInfoLog(vertexShader, 512, NULL, buf);
-            std::cerr << buf << std::endl;
-        }
-
-        m_vert = vertexShader;
         m_vertLoc = sourceLoc;
         m_vertSource = (std::string)source;
-        std::cout << "Vertex shader at '" << sourceLoc << "' compiled..." << std::endl;
-    } else if (type == GL_FRAGMENT_SHADER) {
-        GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, 1, &source, NULL);
-        glCompileShader(fragmentShader);
+        m_vert = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(m_vert, 1, &source, NULL);
+        glCompileShader(m_vert);
 
-        glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &m_status);
+        glGetShaderiv(m_vert, GL_COMPILE_STATUS, &m_status);
         if (m_status == GL_FALSE) {
             char buf[512];
-            glGetShaderInfoLog(fragmentShader, 512, NULL, buf);
+            glGetShaderInfoLog(m_vert, 512, NULL, buf);
             std::cerr << buf << std::endl;
         }
 
-        m_frag = fragmentShader;
+        std::cout << "Vertex shader at '" << sourceLoc << "' compiled..." << std::endl;
+    } else if (type == GL_FRAGMENT_SHADER) {
         m_fragLoc = sourceLoc;
         m_fragSource = (std::string)source;
-        std::cout << "Fragment shader at '" << sourceLoc << "' compiled..." << std::endl;
+        m_frag = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(m_frag, 1, &source, NULL);
+        glCompileShader(m_frag);
+        
+        glGetShaderiv(m_frag, GL_COMPILE_STATUS, &m_status);
+        if (m_status == GL_FALSE) {
+            char buf[512];
+            glGetShaderInfoLog(m_frag, 512, NULL, buf);
+            std::cerr << buf << std::endl;
+        }
+
+        std::cout << "Vertex shader at '" << sourceLoc << "' compiled..." << std::endl;
     }
+
     return *this;
 }
 
