@@ -121,7 +121,7 @@ int main(int argc, char** argv) {
     }
 
 	game->isWindowClosed = true;
-    ~simpleShader()
+    simpleShader.~Shader();
     SDL_GL_DeleteContext(game->glContext);
 	SDL_DestroyWindow(game->window);
 	SDL_Quit();
