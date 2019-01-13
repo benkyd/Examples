@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 	game->window = SDL_CreateWindow("GL CUBE", 
                                     SDL_WINDOWPOS_CENTERED, 
                                     SDL_WINDOWPOS_CENTERED, 
-                                    1000, 1000, 
+                                    500, 500, 
                                     SDL_WINDOW_OPENGL);
 	game->glContext = SDL_GL_CreateContext(game->window);
 
@@ -114,7 +114,7 @@ int main(int argc, char** argv) {
     // Set up a GL texture
     GLuint tex;
     glBindTexture(GL_TEXTURE_2D, tex);
-    // it won't work without this idk why yet
+    // Set mag and min filtering levels
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     // Passes SDL texture into the texture buffer for GL to use in shaders
