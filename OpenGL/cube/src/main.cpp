@@ -7,6 +7,8 @@
 #include <string>
 #include <map>
 
+#include "shader.hpp"
+
 void GLAPIENTRY MessageCallback(GLenum source,
                                 GLenum type,
                                 GLuint id,
@@ -26,71 +28,6 @@ public:
     SDL_GLContext glContext = nullptr;
     bool isWindowClosed = true;
 };
-
-std::map<std::string, GLuint> VertexShaders;
-std::map<std::string, GLuint> FragmentShaders;
-std::map<std::string, GLuint> ShaderPrograms;
-
-std::string readShader(std::string source) {
-    std::ifstream t(source);
-    std::string shaderCode((std::istreambuf_iterator<char>(t)),
-                            std::istreambuf_iterator<char>());
-    // std::cout << shaderCode << std::endl;
-    return shaderCode;
-}
-
-bool loadShader(std::string shaderSource, GLenum type, std::string shader) {
-    const char* source = shaderSource.c_str();
-
-    if (type == GL_VERTEX_SHADER) {
-        GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, 1, &source, NULL);
-        glCompileShader(vertexShader);
-
-        GLint status;
-        glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
-        if (status == GL_FALSE) {
-            char buf[512];
-            glGetShaderInfoLog(vertexShader, 512, NULL, buf);
-            std::cerr << buf << std::endl;
-            return false;
-        }
-
-        VertexShaders[shader] = vertexShader;
-        std::cout << "Vertex shader at '" << shader << "' compiled..." << std::endl;
-    } else if (type == GL_FRAGMENT_SHADER) {
-        GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, 1, &source, NULL);
-        glCompileShader(fragmentShader);
-
-        GLint status;
-        glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
-        if (status == GL_FALSE) {
-            char buf[512];
-            glGetShaderInfoLog(fragmentShader, 512, NULL, buf);
-            std::cerr << buf << std::endl;
-            return false;
-        }
-
-        FragmentShaders[shader] = fragmentShader;
-        std::cout << "Fragment shader at '" << shader << "' compiled..." << std::endl;
-    }
-    return true;
-}
-
-void makeShaderProgram(std::string vert, std::string frag, std::string program) {
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, VertexShaders[vert]);
-    glAttachShader(shaderProgram, FragmentShaders[frag]);
-    ShaderPrograms[program] = shaderProgram;
-    std::cout << "Shader program '" << program << "' created" << std::endl;
-}
-
-void applyShader(std::string shader) {
-    glLinkProgram(ShaderPrograms[shader]);
-    glUseProgram(ShaderPrograms[shader]);
-    std::cout << "Shader program '" << shader << "' applied" << std::endl;
-}
 
 int main(int argc, char** argv) {
     Game* game = new Game();
@@ -152,24 +89,20 @@ int main(int argc, char** argv) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * numOfVerticies, vertices, GL_STATIC_DRAW);
 
     // Load, compile, apply and link shader programs
-    if (!loadShader(readShader("shaders/simple.vert"), GL_VERTEX_SHADER  , "simpleVert") ||
-        !loadShader(readShader("shaders/simple.frag"), GL_FRAGMENT_SHADER, "simpleFrag")) {
-        return 0;
-    }
-    makeShaderProgram("simpleVert", "simpleFrag", "simpleProc");
-    applyShader("simpleProc");
+    Shader simpleShader;
+    simpleShader.load("./shaders/simple").attatch().link().use();
 
-    GLint posAttrib = glGetAttribLocation(ShaderPrograms["simpleProc"], "position");
+    GLint posAttrib = glGetAttribLocation(simpleShader.getProgram(), "position");
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
                         5*sizeof(float), 0);
 
-    GLint colAttrib = glGetAttribLocation(ShaderPrograms["simpleProc"], "colour");
+    GLint colAttrib = glGetAttribLocation(simpleShader.getProgram(), "colour");
     glEnableVertexAttribArray(colAttrib);
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
                         5*sizeof(float), (void*)(2*sizeof(float)));
 
-    GLint triangleUniColour = glGetUniformLocation(ShaderPrograms["simpleProc"], "triangleColour");
+    GLint triangleUniColour = glGetUniformLocation(simpleShader.getProgram(), "triangleColour");
     glUniform3f(triangleUniColour, 0.2f, 0.8f, 0.3f);
 
     SDL_Event event;
