@@ -32,7 +32,9 @@ public:
 
 int main(int argc, char** argv) {
     Game* game = new Game();
+
     SDL_Init(SDL_INIT_EVERYTHING);
+    IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 
 	SDL_GL_SetSwapInterval(0);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -110,7 +112,9 @@ int main(int argc, char** argv) {
     simpleShader.load("./resources/shaders/simple").attatch().link().use();
 
     // Load texture from file
-    SDL_Surface* sur = IMG_Load("./resources/textures/dirtside.jpg");
+    SDL_Surface* sur = IMG_Load("./resources/textures/dirtside.png");
+    if (sur == NULL)
+        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
     // Set up a GL texture
     GLuint tex;
     glBindTexture(GL_TEXTURE_2D, tex);
@@ -118,7 +122,7 @@ int main(int argc, char** argv) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     // Passes SDL texture into the texture buffer for GL to use in shaders
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, sur->w, sur->h, 0, GL_RGB, GL_UNSIGNED_BYTE, sur->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sur->w, sur->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, sur->pixels);
 
     GLint posAttrib = glGetAttribLocation(simpleShader.getProgram(), "position");
     glEnableVertexAttribArray(posAttrib);

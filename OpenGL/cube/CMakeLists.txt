@@ -3,6 +3,7 @@ project(gl-cube)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} CMakeModules/)
 cmake_policy(SET CMP0037 OLD)
+set(CMAKE_BUILD_TYPE Debug)
 
 set(executable cube.a)
 set(SrcDIR ./src)
@@ -20,6 +21,7 @@ find_package(GLEW REQUIRED)
 include_directories(${executable}
     ${SDL2_INCLUDE_DIR}
     ${SDL2_IMAGE_INCLUDE_DIR}
+    ${PNG_INCLUDE_DIR}
     ${GLEW_INCLUDE_DIRS}
     ${IncludeDIR}
 )
@@ -36,6 +38,7 @@ set_target_properties(${executable} PROPERTIES
 )
 
 target_link_libraries(${executable}
+    ${PNG_LIBRARY}
     SDL2
     SDL2_image
     PNG::PNG
