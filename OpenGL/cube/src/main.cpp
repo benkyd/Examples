@@ -3,6 +3,8 @@
 #include <SDL2/SDL_image.h>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <fstream>
 #include <chrono>
 #include <string>
@@ -70,13 +72,50 @@ int main(int argc, char** argv) {
     glClearColor(0.1f, 0.45f, 0.9f, 1.0f);
 
     // GL Screen coordinates of a 2D triangle followed by the colour and the texture coordinates
-    GLint numOfVerticies = 28;
+    GLint numOfVerticies = 288;
     float vertices[] = {
-    //  Positions       Colour               Texture 
-       -0.5f,  0.5f,    1.0f, 0.0f, 0.0f,    0.0f, 0.0f, // Top-left
-        0.5f,  0.5f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f, // Top-right
-        0.5f, -0.5f,    0.0f, 0.0f, 1.0f,    1.0f, 1.0f, // Bottom-right
-       -0.5f, -0.5f,    1.0f, 1.0f, 1.0f,    0.0f, 1.0f, // Bottom-left
+    //  Positions            Colour               Texture 
+        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+
+        -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+
+         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+
+        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f
     };
 
     // Element array - order of verticies drawn
@@ -111,10 +150,14 @@ int main(int argc, char** argv) {
     Shader simpleShader;
     simpleShader.load("./resources/shaders/simple").attatch().link().use();
 
+
     // Load texture from file
-    SDL_Surface* sur = IMG_Load("./resources/textures/dirtside.png");
-    if (sur == NULL)
+    SDL_Surface* sur = IMG_Load("./resources/textures/dirt.png");
+    if (sur == NULL) {
         std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+    } else {
+        std::cout << "Loaded texture 'dirt.png'" << std::endl;
+    }
     // Set up a GL texture
     GLuint tex;
     glBindTexture(GL_TEXTURE_2D, tex);
@@ -126,21 +169,42 @@ int main(int argc, char** argv) {
 
     GLint posAttrib = glGetAttribLocation(simpleShader.getProgram(), "position");
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
-                        7*sizeof(float), 0);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE,
+                        8*sizeof(float), 0);
 
     GLint colAttrib = glGetAttribLocation(simpleShader.getProgram(), "colour");
     glEnableVertexAttribArray(colAttrib);
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
-                        7*sizeof(float), (void*)(2*sizeof(float)));
+                        8*sizeof(float), (void*)(3*sizeof(float)));
 
     GLint texAttrib = glGetAttribLocation(simpleShader.getProgram(), "texcoord");
     glEnableVertexAttribArray(texAttrib);
     glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE,
-                       7*sizeof(float), (void*)(5*sizeof(float)));
+                        8*sizeof(float), (void*)(6*sizeof(float)));
 
-    GLint triangleUniColour = glGetUniformLocation(simpleShader.getProgram(), "triangleColour");
-    glUniform3f(triangleUniColour, 0.2f, 0.8f, 0.3f);
+
+    // Model matrice
+    glm::mat4 model = glm::mat4(1.0f);
+    // Gets uniform for model matrice, to be used later
+    GLint uniTrans = glGetUniformLocation(simpleShader.getProgram(), "model");
+
+    // View matrice
+    glm::mat4 view = glm::lookAt(
+        glm::vec3(1.2f, 1.2f, 1.2f),
+        glm::vec3(0.0f, 0.0f, 0.0f),
+        glm::vec3(0.0f, 0.0f, 1.0f)
+    );
+    // Get uniform and send it to the GPU
+    GLint uniView = glGetUniformLocation(simpleShader.getProgram(), "view");
+    glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
+
+    // Projection matrice
+    glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1.0f, 1.0f, 10.0f);
+    // Get uniform and send it to the GPU    
+    GLint uniProj = glGetUniformLocation(simpleShader.getProgram(), "proj");
+    glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+
+    glEnable(GL_DEPTH_TEST);
 
     SDL_Event event;
     while (!game->isWindowClosed) {
@@ -149,10 +213,18 @@ int main(int argc, char** argv) {
             if (event.key.keysym.sym == SDLK_ESCAPE || event.type == SDL_QUIT) 
                 game->isWindowClosed = true;
 
+        // Rotate cube
+        model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        // model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::vec4 result = model * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+        glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
+
         // Clear the screen
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // Draw a triangle from the 3 vertices
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
         // Swap buffers
         SDL_GL_SwapWindow(game->window);
     }

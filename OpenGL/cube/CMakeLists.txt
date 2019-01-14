@@ -12,6 +12,7 @@ set(IncludeDIR ./include)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(PNG REQUIRED)
+find_package(JPEG REQUIRED)
 
 set(THREADS_PREFER_PTHREAD_FLAD ON)
 find_package(Threads REQUIRED)
@@ -22,6 +23,7 @@ include_directories(${executable}
     ${SDL2_INCLUDE_DIR}
     ${SDL2_IMAGE_INCLUDE_DIR}
     ${PNG_INCLUDE_DIR}
+    ${JPEG_INCLUDE_DIR}
     ${GLEW_INCLUDE_DIRS}
     ${IncludeDIR}
 )
@@ -38,10 +40,10 @@ set_target_properties(${executable} PROPERTIES
 )
 
 target_link_libraries(${executable}
-    ${PNG_LIBRARY}
     SDL2
     SDL2_image
     PNG::PNG
+    JPEG::JPEG
     Threads::Threads
     OpenGL::OpenGL
     OpenGL::GL
