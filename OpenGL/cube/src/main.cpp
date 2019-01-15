@@ -1,7 +1,7 @@
 #include <iostream>
+#include <glad/glad.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -12,17 +12,17 @@
 
 #include "shader.hpp"
 
-void GLAPIENTRY MessageCallback(GLenum source,
-                                GLenum type,
-                                GLuint id,
-                                GLenum severity,
-                                GLsizei length,
-                                const GLchar* message,
-                                const void* userParam) {
-  fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-           (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
-            type, severity, message);
-}
+// void GLAPIENTRY MessageCallback(GLenum source,
+//                                 GLenum type,
+//                                 GLuint id,
+//                                 GLenum severity,
+//                                 GLsizei length,
+//                                 const GLchar* message,
+//                                 const void* userParam) {
+//   fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+//            (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
+//             type, severity, message);
+// }
 
 class Game {
 public:
@@ -44,6 +44,9 @@ int main(int argc, char** argv) {
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
 	game->window = SDL_CreateWindow("GL CUBE", 
                                     SDL_WINDOWPOS_CENTERED, 
                                     SDL_WINDOWPOS_CENTERED, 
@@ -52,11 +55,7 @@ int main(int argc, char** argv) {
 	game->glContext = SDL_GL_CreateContext(game->window);
 	SDL_GL_SetSwapInterval(0);
 
-    GLenum GLEWStatus = glewInit();
-    if (GLEWStatus != GLEW_OK) {
-        std::cerr << "FAILED TO INITALIZE GLEW" << std::endl;
-        return 0;
-    }
+    gladLoadGLLoader(SDL_GL_GetProcAddress);
 
     // SDL_WarpMouseInWindow(m_window, width / 2, height / 2);
 	// SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -65,7 +64,7 @@ int main(int argc, char** argv) {
 
     // Set GL error handling callback
     // glEnable(GL_DEBUG_OUTPUT);
-    glDebugMessageCallback(MessageCallback, 0);
+    // glDebugMessageCallback(MessageCallback, 0);
 
     // Set GL clear colour (light blue)
     glClearColor(0.1f, 0.45f, 0.9f, 1.0f);
@@ -207,14 +206,20 @@ int main(int argc, char** argv) {
     glEnable(GL_DEPTH_TEST);
 
     std::chrono::high_resolution_clock timer;
-    auto lastTime = timer.now();
+    auto FPSCalculateLast = timer.now();
+    auto FPSClock = SDL_GetTicks();
+
+    auto UpdateClock = SDL_GetTicks();
 
     SDL_Event event;
     while (!game->isWindowClosed) {
         // Measure fps
-        auto deltaTime = std::chrono::duration_cast<std::chrono::nanoseconds>(timer.now() - lastTime).count();
-        std::cout << "FPS: " << (int)(1 / ((float)deltaTime * 1e-9)) << std::endl;
-        lastTime = timer.now();;
+        if (SDL_GetTicks() - FPSClock >= 1000) {
+            auto deltaTime = std::chrono::duration_cast<std::chrono::nanoseconds>(timer.now() - FPSCalculateLast).count();
+            std::cout << "FPS: " << (int)(1 / ((float)deltaTime * 1e-9)) << std::endl;
+            FPSClock = SDL_GetTicks();
+        }
+        FPSCalculateLast = timer.now();
 
         // Input handling
         while (SDL_PollEvent(&event) != 0)
@@ -222,10 +227,13 @@ int main(int argc, char** argv) {
                 game->isWindowClosed = true;
 
         // Rotate cube
-        model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        glm::vec4 result = model * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-        glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
+        if (SDL_GetTicks() - UpdateClock >= 10) {
+            model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            glm::vec4 result = model * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+            glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
+            UpdateClock = SDL_GetTicks();
+        }
 
         // Clear the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

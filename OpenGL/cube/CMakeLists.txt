@@ -17,14 +17,12 @@ find_package(JPEG REQUIRED)
 set(THREADS_PREFER_PTHREAD_FLAD ON)
 find_package(Threads REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
 
 include_directories(${executable}
     ${SDL2_INCLUDE_DIR}
     ${SDL2_IMAGE_INCLUDE_DIR}
     ${PNG_INCLUDE_DIR}
     ${JPEG_INCLUDE_DIR}
-    ${GLEW_INCLUDE_DIRS}
     ${IncludeDIR}
 )
 
@@ -40,12 +38,12 @@ set_target_properties(${executable} PROPERTIES
 )
 
 target_link_libraries(${executable}
+    ${CMAKE_DL_LIBS}
+    OpenGL::OpenGL
+    OpenGL::GL
     SDL2
     SDL2_image
     PNG::PNG
     JPEG::JPEG
     Threads::Threads
-    OpenGL::OpenGL
-    OpenGL::GL
-    GLEW
 )
