@@ -22,10 +22,15 @@ public:
     bool OnUserUpdate(float fElapsedTime) override {
         /* START CALCULATONS */
         if (!m_isStopped) {
-            m_aAccel = ((-1 * m_gravity / m_pLength) * sin(m_theta) * m_pMass) * fElapsedTime;
+            m_timeAccumilator = m_timeAccumilator + fElapsedTime;
+            if (m_timeAccumilator >= 0.016f) {
+                m_aAccel = ((-1 * m_gravity / m_pLength) * sin(m_theta) * m_pMass) * m_timeAccumilator;
+                m_timeAccumilator = 0.0f;
 
-            m_aVelocity += m_aAccel *= m_pDamping;
-            m_theta += m_aVelocity;
+                m_aVelocity += m_aAccel;
+                m_aVelocity *= m_pDamping;
+                m_theta += m_aVelocity;
+            }
         }
 
         m_x = m_pLength * sin(m_theta) + m_pivotX;
@@ -67,11 +72,7 @@ public:
         Clear(olc::WHITE);
         FillCircle(m_pivotX, m_pivotY, 8, olc::RED);
         DrawLine(m_pivotX, m_pivotY, m_x, m_y, olc::BLACK);
-        if (!m_isStopped) {
-            FillCircle(m_x, m_y, 20, olc::BLACK);
-        } else {
-            FillCircle(m_x, m_y, 20, olc::DARK_GREY);
-        }
+        FillCircle(m_x, m_y, 20, olc::BLACK);
     }
 private:
     bool m_isStopped = false;
@@ -90,7 +91,8 @@ private:
     float m_gravity = 9.81;
     float m_pMass = 5;
 
-    float m_pDamping = 0.9;
+    float m_pDamping = 0.999999999;
+    float m_timeAccumilator = 0.0f;
 };
 
 int main(int argc, char** argv) {
