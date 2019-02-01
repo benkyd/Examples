@@ -34,7 +34,11 @@ public:
                     iteration++;
                 }
                 long double ratio = (long double)iteration - std::log2(std::log2(Zre*Zre + Zim*Zim)) / m_maxIterations;
+<<<<<<< HEAD
                 olc::Pixel colour = olc::Pixel(ratio + 255.0f, ratio + 255.0f, ratio + 255.0f);
+=======
+                olc::Pixel colour = olc::Pixel(ratio, ratio, ratio);
+>>>>>>> 447c0c7a41568e3993820342ea06d7b95d1fe18c
                 DrawRect(pX, pY, 1, 1, colour);
             }
         }
