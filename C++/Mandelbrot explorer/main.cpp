@@ -33,10 +33,8 @@ public:
                     Zre = tX;
                     iteration++;
                 }
-                long double ratio1 = (long double)iteration - std::log2(std::log2(Zre*Zre + Zim*Zim)) / m_maxIterations;
-                long double ratio2 = (long double)iteration - std::log(std::log(Zre*Zre * Zim*Zim)) / m_maxIterations;
-                long double ratio3 = (long double)iteration - std::log10(std::log10(Zre*Zre - Zim*Zim)) / m_maxIterations;
-                olc::Pixel colour = olc::Pixel(ratio1 + 255.0f, ratio2 + 255.0f, ratio3 + 255.0f);
+                long double ratio = (long double)iteration - std::log2(std::log2(Zre*Zre + Zim*Zim)) / m_maxIterations;
+                olc::Pixel colour = olc::Pixel(ratio + 255.0f, ratio + 255.0f, ratio + 255.0f);
                 DrawRect(pX, pY, 1, 1, colour);
             }
         }
@@ -61,7 +59,7 @@ private:
     long double m_x = 1.0f;
     long double m_y = 1.0f;
     long double m_scale = 0.7f;
-    int m_maxIterations = 15;
+    int m_maxIterations = 100;
     std::map<int, olc::Pixel> m_palete;
 };
 
