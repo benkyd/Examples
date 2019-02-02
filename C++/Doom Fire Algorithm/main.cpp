@@ -38,7 +38,6 @@ public:
         if (GetMouse(0).bHeld) {
             Vec2<int> m = {GetMouseX(), GetMouseY()};
             auto fillCircle = [&](int x, int y, int radius, int val) {
-                // Taken from wikipedia
                 int x0 = 0;
                 int y0 = radius;
                 int d = 3 - 2 * radius;
@@ -50,7 +49,6 @@ public:
                 };
 
                 while (y0 >= x0) {
-                    // Modified to draw scan-lines instead of edges
                     drawline(x - x0, x + x0, y - y0);
                     drawline(x - y0, x + y0, y - x0);
                     drawline(x - x0, x + x0, y + y0);
