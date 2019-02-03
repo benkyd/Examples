@@ -3,8 +3,8 @@
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 
-int WINDOW_HEIGHT = 720 / 4;
-int WINDOW_WIDTH = 1280 / 4;
+int WINDOW_HEIGHT = 720 / 2;
+int WINDOW_WIDTH = 1280 / 2;
 
 int* firePixelsArray = new int[(WINDOW_WIDTH) * (WINDOW_HEIGHT)];
 int numberOfPixels = (WINDOW_WIDTH) * (WINDOW_HEIGHT); 
@@ -26,9 +26,9 @@ public:
 
     bool OnUserUpdate(float fElapsedTime) override {
         m_timeAccumilator += fElapsedTime;
-        if (m_timeAccumilator >= 0.033) {
+        if (m_timeAccumilator >= 0.023) {
             m_timeAccumilator = 0.0f;
-            #pragma omp parallel for schedule(dynamic)
+            #pragma omp parallel for schedule(dynamic) 
             for (int i = 0; i < numberOfPixels; i++) {
                 UpdateFireIntensity(i);
             }
@@ -57,7 +57,7 @@ public:
                     else d += 4 * (x0++ - y0--) + 10;
                 }
             };
-            fillCircle(m.x, m.y, 4, 36);
+            fillCircle(m.x, m.y, 2, 36);
         }
 
         return true;
@@ -66,10 +66,10 @@ public:
     void UpdateFireIntensity(int pixel) {
         int pixelBelowIndex = pixel + WINDOW_WIDTH;
         if (pixelBelowIndex < numberOfPixels) {
-            int decay = floor(rand() % 3);
+            int decay = (int)floor(rand() % 3) & 3;
             int pixelBelowIntensity = firePixelsArray[pixelBelowIndex];
-            int intensity = pixelBelowIntensity - decay >= 0 ? pixelBelowIntensity - decay : 0;
-            int position  = (pixel - decay >= 0) ? pixel - decay : 0;
+            int intensity = pixelBelowIntensity - decay >= 0 ? pixelBelowIntensity - (decay & 1) : 0;
+            int position  = (pixel - decay >= 0) ? pixel - (decay & 1) : 0;
             firePixelsArray[position] = intensity;
         }
     }
@@ -99,7 +99,7 @@ private:
 
 int main(int argc, char** argv) {
     FireSim app;
-    if (app.Construct(WINDOW_WIDTH, WINDOW_HEIGHT, 4, 4))
+    if (app.Construct(WINDOW_WIDTH, WINDOW_HEIGHT, 2, 2))
         app.Start();
     return 0;
 }
