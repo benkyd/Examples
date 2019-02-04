@@ -1,4 +1,4 @@
-To do
+﻿To do
 
 - [ ] Forward kinematics
 - [ ] Inverse kinematics
@@ -17,7 +17,7 @@ To do
 - [ ] Tesseract
 - [ ] Lissajous table
 - [ ] Navier-Stokes fluid simulation
-- [ ] Floyd-Steinberg dithering
+- [x] Floyd-Steinberg dithering
 - [ ] Terminal text extension
 - [ ] SDL2 audio extension
 - [ ] Other error diffusion methods
