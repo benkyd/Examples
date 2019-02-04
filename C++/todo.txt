@@ -2,6 +2,9 @@
 
 - [ ] Forward kinematics
 - [ ] Inverse kinematics
+- [ ] Maze generation
+- [ ] Flood fill search algorithm
+- [ ] A* Search
 - [x] Simple pendulum
 - [ ] Double pendulum
 - [x] Doom fire algorithm
