@@ -1,0 +1,152 @@
+To do
+
+- [ ] Forward kinematics
+- [ ] Inverse kinematics
+- [x] Simple pendulum
+- [ ] Double pendulum
+- [x] Doom fire algorithm
+- [ ] Quad tree compression
+- [ ] GLSL smallpt
+- [ ] CPU smallpt
+- [ ] Dithering library
+- [ ] All RGB
+- [ ] Chip-8 emulator
+- [ ] Chip-8 assembler
+- [ ] Chip-8 disassembler
+- [ ] Normal mapping on images
+- [ ] Tesseract
+- [ ] Lissajous table
+- [ ] Navier-Stokes fluid simulation
+- [] Floyd-Steinberg dithering
+- [ ] Terminal text extension
+- [ ] SDL2 audio extension
+- [ ] Other error diffusion methods
+- [ ] Elementary cellular automata
+- [ ] Two-dimensional cellular automata
+- [ ] Software rasterizer
+- [ ] Fire automata
+- [ ] Plasma effect
+- [ ] Perlin noise terrain
+- [ ] Refracting rays
+- [ ] Sierpinski triangle
+- [ ] Untextured ray caster
+- [ ] Textured ray caster
+- [ ] Verlet integration rag doll physics
+- [ ] Truetype font rasterizing
+- [ ] Quaternion raymarching
+- [ ] Newton fractal
+- [ ] Complex function visualization 
+- [ ] Smoothed particle hydrodynamics
+- [ ] Porting minecraft4k
+- [ ] Physics sandbox (Verlet)
+- [ ] Barycentric triangle coordinates
+- [ ] Pac-Man simulation
+- [ ] Dynamic lighting (line of sight)
+- [ ] Tetris simulation
+- [ ] Falling text (Matrix simulation)
+- [ ] Snake simulation
+- [ ] Ball/ball collisions and response
+- [ ] The Powder Toy
+- [ ] Burning ship fractal
+- [ ] NES emulator
+- [ ] MNIST neural network
+- [ ] Simple XOR neural network
+- [ ] Genetic algorithms
+- [ ] Ear-clipping triangulation
+- [ ] Fireworks particle system
+- [ ] Newtonian gravity particle system
+- [ ] Load models (SGL)
+- [ ] Projection (SGL)
+- [ ] Transformation (SGL)
+- [ ] Culling (SGL)
+- [ ] Clipping (SGL)
+- [ ] Lighting (SGL)
+- [x] Mandelbrot explorer
+- [ ] Black/white dithering
+- [ ] 3-bit color dithering
+- [ ] N-body simulation
+- [ ] Barnes-Hut n-body simulation
+- [ ] Cloth simulation (Verlet)
+- [ ] Procedural texture generation
+- [ ] Hilbert curve
+- [ ] Turtle graphics engine
+- [ ] OpenGL procedural terrain
+- [ ] Julia set explorer
+- [ ] OpenGL model viewer
+- [ ] GPU acceleration framework
+- [ ] Raymarching silhouettes
+- [ ] Raymarching Phong illumination
+- [ ] Domain repetition and primitive operators (raymarching)
+- [ ] OpenCV with OpenGL video processing
+- [ ] Ray marched terrain
+- [ ] GPU accelerated Mandelbrot explorer
+- [ ] GPU accelerated Julia explorer
+- [ ] GPU accelerated Burning Ship explorer
+- [ ] GPU accelerated Newton explorer
+- [ ] Physically correct asteroids
+- [ ] Fractal generator (high-precision)
+- [ ] Affine transformations (identity)
+- [ ] Affine transformations (rotation)
+- [ ] Affine transformations (translation)
+- [ ] Affine transformations (scalar)
+- [ ] Affine transformations (shear)
+- [ ] Fractal Brownian motion simulation
+- [ ] Phong lighting with normal interpolation
+- [ ] Audio processing with stb_vorbis
+- [ ] Voronoi diagrams
+- [ ] Raymarched die
+- [ ] Raymarched pawn
+- [ ] Cellular noise terrain
+- [ ] Voronoi based terrain generation
+- [ ] Naive metaballs
+- [ ] Naive Voronoi metaballs
+- [ ] Naive blended metaballs
+- [ ] Metaballs with marching squares
+- [ ] Perlin noise flow field
+- [ ] Pressure and heat simulations
+- [ ] Marching squares isolines
+- [ ] 15 seconds of RAM on Chip-8
+- [ ] K-means clustering
+- [ ] Additive blending
+- [ ] RGB 3D visualization
+- [ ] RGB-HSL and vice versa
+- [ ] Grapher
+- [ ] Flocking (boids)
+- [ ] Image quantization (median-cut)
+- [ ] Image quantization (k-means)
+- [ ] Double-precision GLSL fractals
+- [ ] Bézier curve
+- [ ] Refraction (optics)
+- [ ] Mode 7 racing
+- [ ] Spiral raster
+- [ ] Plot function
+- [ ] Rope simulation (Verlet)
+- [ ] Hair simulation (Verlet)
+- [ ] Koch snowflake
+- [ ] Newton’s cradle simulation (Verlet)
+- [ ] Anti-aliased line rasterization (Xiaolin Wu)
+- [ ] Anti-aliased thick line rasterization (Xiaolin Wu)
+- [ ] Spirograph
+- [ ] Circle-line intersection
+- [ ] Fourier series visualization (square)
+- [ ] Fourier series visualization (saw)
+- [ ] Discrete Fourier transform
+- [ ] Fourier transform based epicycles
+- [ ] Fast Fourier transform
+- [ ] 2D nearest-neighbor interpolation
+- [ ] Bilinear interpolation
+- [ ] Bicubic interpolation
+- [ ] Edge detection 
+- [ ] Catmull-Rom splines
+- [ ] Sepia filter
+- [ ] Various black/white filters
+- [ ] Guassian blur
+- [ ] Box blur
+- [ ] Image convolution using kernels
+- [ ] Function approximation using neural networks
+- [ ] Checkers/chess game in OpenGL
+- [ ] Rubik’s cube solver and scrambler
+- [ ] Rubik’s cube renderer in OpenGL
+- [ ] Connect 4 in OpenGL
+- [ ] Fast Fourier transform for audio visualization
+- [ ] Text editor using Terminal extension
