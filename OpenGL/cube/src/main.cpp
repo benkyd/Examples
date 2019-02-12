@@ -1,7 +1,12 @@
 #include <iostream>
 #include <glad/glad.h>
+#ifdef _WIN32
+#include <SDL.h>
+#include <SDL_image.h>
+#else
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#endif
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -158,6 +163,7 @@ int main(int argc, char** argv) {
     }
     // Set up a GL texture
     GLuint tex;
+	glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
     // Set mag and min filtering levels
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

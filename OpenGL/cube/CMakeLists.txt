@@ -9,18 +9,37 @@ set(executable cube.a)
 set(SrcDIR ./src)
 set(IncludeDIR ./include)
 
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(PNG REQUIRED)
-find_package(JPEG REQUIRED)
+if (UNIX)
+	find_package(SDL2 REQUIRED)
+	find_package(SDL2_image REQUIRED)
+	find_package(PNG REQUIRED)
+	find_package(JPEG REQUIRED)
+endif(UNIX)
+
+if (WIN32)
+	SET(CMAKE_CXX_FLAGS "-IC:/dev/SDL2/include/ -LC:/dev/SDL2/lib/x64/")
+	SET(CMAKE_CXX_FLAGS "-IC:/dev/SDL2_image/include/ -LC:/dev/SDL2_image/lib/x64/")
+	SET(CMAKE_CXX_FLAGS "-IC:/dev/glm")
+
+	include_directories(${executable}
+		"C:/dev/glm"
+		"C:/dev/SDL2/include/"
+		"C:/dev/SDL2_image/include/"
+	)
+endif (WIN32)
 
 set(THREADS_PREFER_PTHREAD_FLAD ON)
 find_package(Threads REQUIRED)
 find_package(OpenGL REQUIRED)
 
+if (UNIX)
+	include_directories(${executable}
+		${SDL2_INCLUDE_DIR}
+		${SDL2_IMAGE_INCLUDE_DIR}
+	)
+endif (UNIX)
+
 include_directories(${executable}
-    ${SDL2_INCLUDE_DIR}
-    ${SDL2_IMAGE_INCLUDE_DIR}
     ${PNG_INCLUDE_DIR}
     ${JPEG_INCLUDE_DIR}
     ${IncludeDIR}
@@ -37,13 +56,28 @@ set_target_properties(${executable} PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
+if (UNIX)
+	target_link_libraries(${executable}
+		SDL2
+		SDL2_image
+		PNG::PNG
+		JPEG::JPEG
+	    OpenGL::OpenGL
+		OpenGL::GL
+		Threads::Threads
+	)
+endif (UNIX)
+
+if (WIN32)
+	target_link_libraries(${executable}
+		"C:/dev/SDL2/lib/x64/SDL2.lib"
+		"C:/dev/SDL2/lib/x64/SDL2main.lib"
+		"C:/dev/SDL2/lib/x64/SDL2test.lib"
+		"C:/dev/SDL2_image/lib/x64/SDL2_image.lib"
+		${WinSDK}
+	)
+endif (WIN32)
+
 target_link_libraries(${executable}
     ${CMAKE_DL_LIBS}
-    OpenGL::OpenGL
-    OpenGL::GL
-    SDL2
-    SDL2_image
-    PNG::PNG
-    JPEG::JPEG
-    Threads::Threads
 )
