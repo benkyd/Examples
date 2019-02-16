@@ -47,8 +47,8 @@ int main(int argc, char** argv) {
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
 
 	window = SDL_CreateWindow("OpenGL Playground V1.0",
 		SDL_WINDOWPOS_CENTERED,
@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
 		}
 		FPSCalculateLast = timer.now();
 
-		// Update tick
+		// Update tick (60ups)
 		if (SDL_GetTicks() - UpdateClock >= 10) {
 
 		}
