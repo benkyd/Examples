@@ -24,7 +24,7 @@ if (WIN32)
 	include_directories(${executable}
 		"C:/dev/glm"
 		"C:/dev/SDL2/include/"
-		"C:/dev/SDL2_image/include/"
+		#"C:/dev/SDL2_image/include/"
 	)
 endif (WIN32)
 
