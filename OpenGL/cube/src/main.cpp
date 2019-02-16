@@ -75,8 +75,8 @@ int main(int argc, char** argv) {
     glClearColor(0.1f, 0.45f, 0.9f, 1.0f);
 
     // GL Screen coordinates of a 2D triangle followed by the colour and the texture coordinates
-    GLint numOfVerticies = 288;
-    float vertices[] = {
+    GLint numOfVertexes = 288;
+    float vertexes[] = {
     //  Positions               Colour               Texture 
         -0.5f, -0.5f, -0.5f,    1.0f, 1.0f, 1.0f,    0.0f, 0.0f,
          0.5f, -0.5f, -0.5f,    1.0f, 1.0f, 1.0f,    1.0f, 0.0f,
@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
     // Bind buffer to the GPU
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     // Copy vertex data to the vertex buffer already on the GPU
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * numOfVerticies, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes[0]) * numOfVertexes, vertexes, GL_STATIC_DRAW);
 
     // Generate another vertex buffer for the element array buffer
     GLuint ebo;
