@@ -64,21 +64,6 @@ typedef enum {
 
 class Colour {
 public:
-	//template<class T, class D>
-	//static std::string getColouredText(T colour, D text) {
-	//	std::stringstream output;
-		
-//#ifdef _WIN32
-	//	SetConsoleTextAttribute(h, T);
-//#else
-	//	output << "\033[" << colour << "m" << text;
-	//	output << "\033[" << CONSOLE_COLOUR_BG_DEFAULT << "m";
-	//	output << "\033[" << CONSOLE_COLOUR_FG_DEFAULT << "m";
-//#endif
-
-	//	return output.str();
-	//}
-
 	static void resetColour() {
 #ifdef _WIN32
 		SetConsoleTextAttribute(h, CONSOLE_COLOUR_BG_DEFAULT);
