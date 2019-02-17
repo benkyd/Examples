@@ -8,7 +8,6 @@ CMakeFiles/output.dir/src/glad.c.o: src/glad.c
 CMakeFiles/output.dir/src/main.cpp.o: ./include/KHR/khrplatform.h
 CMakeFiles/output.dir/src/main.cpp.o: ./include/glad/glad.h
 CMakeFiles/output.dir/src/main.cpp.o: ./include/logger.h
-CMakeFiles/output.dir/src/main.cpp.o: src/init.h
 CMakeFiles/output.dir/src/main.cpp.o: src/main.cpp
 CMakeFiles/output.dir/src/main.cpp.o: src/object.h
 CMakeFiles/output.dir/src/main.cpp.o: src/timers.h
