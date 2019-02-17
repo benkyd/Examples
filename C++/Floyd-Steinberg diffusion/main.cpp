@@ -14,6 +14,12 @@ int index(int x, int y, int w) {
     return x+y*w;
 }
 
+int floorColour(float col) {
+    //yeah do NOT diss me FUCK OFF
+    #include <cmath>
+    return std::max(0.0f,std::min(255.0f,col));
+}
+
 int main(int argc, char** argv) {
     if (argc < 2) {
         std::cout << "Incorrect usage, use like ./output.o <imagepath>" << std::endl;
@@ -48,34 +54,34 @@ int main(int argc, char** argv) {
             int oldG = image[index(x, y, w)].g;
             int oldB = image[index(x, y, w)].b;
             // CXII: this is just rounding to black or white i assume
-            int newR = image[index(x, y, w)].r < 127 ?0:255; 
-             int newG = image[index(x, y, w)].g < 127 ? 0:255; 
-            int newB = image[index(x, y, w)].b < 127 ? 0:255; 
+            int newR = image[index(x, y, w)].r < 127?0:255; 
+            int newG = image[index(x, y, w)].g < 127?0:255; 
+            int newB = image[index(x, y, w)].b < 127?0:255; 
 
             float errorR = oldR - newR; //image[index(x, y, w)].r - image[index(x, y, w)].r;
             float errorG = oldG - newG; //image[index(x, y, w)].g - image[index(x, y, w)].g;
             float errorB = oldB - newB; //image[index(x, y, w)].b - image[index(x, y, w)].b;
 
-            // // Perform the diffusion
+            // Perform the diffusion
             int i = index(x+1, y, w);
-            image[i].r = (float)image[i].r + errorR * (7.0f / 16.0f);
-            image[i].g = (float)image[i].g + errorG * (7.0f / 16.0f);
-            image[i].b = (float)image[i].b + errorB * (7.0f / 16.0f);
+            image[i].r = floorColour((float)image[i].r + errorR * (7.0f / 16.0f));
+            image[i].g = floorColour((float)image[i].g + errorG * (7.0f / 16.0f));
+            image[i].b = floorColour((float)image[i].b + errorB * (7.0f / 16.0f));
 
             i = index(x-1, y+1, w);
-            image[i].r = (float)image[i].r + errorR * (3.0f / 16.0f);
-            image[i].g = (float)image[i].g + errorG * (3.0f / 16.0f);
-            image[i].b = (float)image[i].b + errorB * (3.0f / 16.0f);
+            image[i].r = floorColour((float)image[i].r + errorR * (3.0f / 16.0f));
+            image[i].g = floorColour((float)image[i].g + errorG * (3.0f / 16.0f));
+            image[i].b = floorColour((float)image[i].b + errorB * (3.0f / 16.0f));
 
             i = index(x, y+1, w);
-            image[i].r = (float)image[i].r + errorR * (5.0f / 16.0f);
-            image[i].g = (float)image[i].g + errorG * (5.0f / 16.0f);
-            image[i].b = (float)image[i].b + errorB * (5.0f / 16.0f);
+            image[i].r = floorColour((float)image[i].r + errorR * (5.0f / 16.0f));
+            image[i].g = floorColour((float)image[i].g + errorG * (5.0f / 16.0f));
+            image[i].b = floorColour((float)image[i].b + errorB * (5.0f / 16.0f));
 
             i = index(x+1, y+1, w);
-            image[i].r = (float)image[i].r + errorR * (1.0f / 16.0f);
-            image[i].g = (float)image[i].g + errorG * (1.0f / 16.0f);
-            image[i].b = (float)image[i].b + errorB * (1.0f / 16.0f);
+            image[i].r = floorColour((float)image[i].r + errorR * (1.0f / 16.0f));
+            image[i].g = floorColour((float)image[i].g + errorG * (1.0f / 16.0f));
+            image[i].b = floorColour((float)image[i].b + errorB * (1.0f / 16.0f));
 
             // CXII: now this is where u went wrong buddy
             newImage[index(x, y, w)].r = newR;
