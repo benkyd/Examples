@@ -48,15 +48,15 @@ int main(int argc, char** argv) {
             int oldG = image[index(x, y, w)].g;
             int oldB = image[index(x, y, w)].b;
             // CXII: this is just rounding to black or white i assume
-            int newR = image[index(x, y, w)].r < 127 ?0:255; 
-             int newG = image[index(x, y, w)].g < 127 ? 0:255; 
-            int newB = image[index(x, y, w)].b < 127 ? 0:255; 
+            int newR = round(colComplexity * image[index(x, y, w)].r / 255) * (255 / colComplexity); 
+            int newG = round(colComplexity * image[index(x, y, w)].g / 255) * (255 / colComplexity); 
+            int newB = round(colComplexity * image[index(x, y, w)].b / 255) * (255 / colComplexity);
 
             float errorR = oldR - newR; //image[index(x, y, w)].r - image[index(x, y, w)].r;
             float errorG = oldG - newG; //image[index(x, y, w)].g - image[index(x, y, w)].g;
             float errorB = oldB - newB; //image[index(x, y, w)].b - image[index(x, y, w)].b;
 
-            // // Perform the diffusion
+            // Perform the diffusion
             int i = index(x+1, y, w);
             image[i].r = (float)image[i].r + errorR * (7.0f / 16.0f);
             image[i].g = (float)image[i].g + errorG * (7.0f / 16.0f);
@@ -78,9 +78,9 @@ int main(int argc, char** argv) {
             image[i].b = (float)image[i].b + errorB * (1.0f / 16.0f);
 
             // CXII: now this is where u went wrong buddy
-            newImage[index(x, y, w)].r = newR;
-            newImage[index(x, y, w)].g = newG;
-            newImage[index(x, y, w)].b = newB;
+            newImage[index(x, y, w)].r = 255;
+            newImage[index(x, y, w)].g = 0;
+            newImage[index(x, y, w)].b = 0;
 
             // pixel[x + 1][y    ] := pixel[x + 1][y    ] + quant_error * 7 / 16
             // pixel[x - 1][y + 1] := pixel[x - 1][y + 1] + quant_error * 3 / 16
