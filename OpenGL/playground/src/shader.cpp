@@ -3,7 +3,8 @@
 #include <iostream>
 #include <fstream>
 
-Shader::Shader() {
+Shader::Shader(Logger& logger)
+	: logger(logger) {
     m_program = glCreateProgram();
 }
 
@@ -44,10 +45,10 @@ Shader& Shader::load(GLenum type, std::string sourceLoc) {
         if (m_status == GL_FALSE) {
             char buf[512];
             glGetShaderInfoLog(m_vert, 512, NULL, buf);
-            std::cerr << buf << std::endl;
+			logger << LOGGER_ERROR << buf << LOGGER_ENDL;
         }
 
-        std::cout << "Vertex shader at '" << sourceLoc << "' compiled..." << std::endl;
+        logger << LOGGER_INFO << "Vertex shader at '" << sourceLoc << "' compiled..." << LOGGER_ENDL;
     } else if (type == GL_FRAGMENT_SHADER) {
         m_fragLoc = sourceLoc;
         m_fragSource = (std::string)source;
@@ -59,10 +60,10 @@ Shader& Shader::load(GLenum type, std::string sourceLoc) {
         if (m_status == GL_FALSE) {
             char buf[512];
             glGetShaderInfoLog(m_frag, 512, NULL, buf);
-            std::cerr << buf << std::endl;
-        }
+			logger << LOGGER_ERROR << buf << LOGGER_ENDL;
+		}
 
-        std::cout << "Vertex shader at '" << sourceLoc << "' compiled..." << std::endl;
+        logger << LOGGER_INFO << "Vertex shader at '" << sourceLoc << "' compiled..." << LOGGER_ENDL;
     }
 
     return *this;
@@ -90,18 +91,18 @@ Shader& Shader::load(std::string sourceLoc) {
     if (m_status == GL_FALSE) {
         char buf[512];
         glGetShaderInfoLog(m_vert, 512, NULL, buf);
-        std::cerr << buf << std::endl;
+		logger << LOGGER_ERROR << buf << LOGGER_ENDL;
     }
 
     glGetShaderiv(m_frag, GL_COMPILE_STATUS, &m_status);
     if (m_status == GL_FALSE) {
         char buf[512];
         glGetShaderInfoLog(m_frag, 512, NULL, buf);
-        std::cerr << buf << std::endl;
-    }
+		logger << LOGGER_ERROR << buf << LOGGER_ENDL;
+	}
 
-    std::cout << "Vertex shader at '" << m_vertLoc << "' compiled..." << std::endl;
-    std::cout << "Fragment shader at '" << m_fragLoc << "' compiled..." << std::endl;
+    logger << LOGGER_INFO << "Vertex shader at '" << m_vertLoc << "' compiled..." << LOGGER_ENDL;
+	logger << LOGGER_INFO << "Fragment shader at '" << m_fragLoc << "' compiled..." << LOGGER_ENDL;
     return *this;
 }
 

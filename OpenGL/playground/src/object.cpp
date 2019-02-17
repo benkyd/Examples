@@ -7,6 +7,7 @@ void LoadOBJ(Logger& logger, std::string file, std::vector<glm::vec4>& vertices,
     std::ifstream in(file, std::ios::in);
     if (!in) {
         logger << LOGGER_ERROR << "Cannot open " << file << LOGGER_ENDL;
+		return;
     }
 
     std::string line;

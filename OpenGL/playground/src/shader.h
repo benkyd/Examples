@@ -3,10 +3,11 @@
 
 #include <glad/glad.h>
 #include <string>
+#include <logger.h>
 
 class Shader {
 public:
-    Shader();
+	Shader(Logger& logger);
 
     Shader& use();
     Shader& link();
@@ -31,6 +32,8 @@ private:
     std::string m_fragSource;
     std::string m_vertLoc;
     std::string m_fragLoc;
+
+	Logger& logger;
 
     GLint m_status;
 };

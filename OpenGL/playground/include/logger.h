@@ -30,9 +30,9 @@ typedef enum {
 } ConsoleColour;
 
 #ifdef _WIN32
-	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-	WORD wOldColorAttrs;
-	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
+	static HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	static WORD wOldColorAttrs;
+	static CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 #endif
 
 #else
@@ -64,25 +64,10 @@ typedef enum {
 
 class Colour {
 public:
-	static void resetColour() {
-#ifdef _WIN32
-		SetConsoleTextAttribute(h, CONSOLE_COLOUR_BG_DEFAULT);
-		SetConsoleTextAttribute(h, CONSOLE_COLOUR_FG_DEFAULT);
-#else
-		std::cout
-			<< "\033[" << CONSOLE_COLOUR_BG_DEFAULT << "m"
-			<< "\033[" << CONSOLE_COLOUR_FG_DEFAULT << "m";
-#endif
-	}
+	static void resetColour();
 
 	template<class T>
-	static void consoleColour(T colour) {
-#ifdef _WIN32
-		SetConsoleTextAttribute(h, colour);
-#else
-		std::cout << "\033[" << colour << "m";
-#endif
-	}
+	static void consoleColour(T colour);
 };
 
 typedef enum {
@@ -103,19 +88,7 @@ public:
 
 	std::stringstream outStream;
 	std::map<LogType, std::string> lookupTable;
-	Logger() {
-
-#ifdef _WIN32
-		GetConsoleScreenBufferInfo(h, &csbiInfo);
-		wOldColorAttrs = csbiInfo.wAttributes;
-#endif
-
-		lookupTable[LOGGER_INFO] = "INFO";
-		lookupTable[LOGGER_WARN] = "WARN";
-		lookupTable[LOGGER_ERROR] = "ERROR";
-		lookupTable[LOGGER_PANIC] = "PANIC";
-		lookupTable[LOGGER_DEBUG] = "DEBUG";
-	}
+	Logger();
 
 	Logger& operator<< (const LogType type) {
 		std::cout << "[";
@@ -143,5 +116,45 @@ public:
 		return *this;
 	}
 };
+
+#endif
+
+#ifdef LOGGER_DEFINITION
+#undef LOGGER_DEFINITION
+
+
+void Colour::resetColour() {
+#ifdef _WIN32
+	SetConsoleTextAttribute(h, CONSOLE_COLOUR_BG_DEFAULT);
+	SetConsoleTextAttribute(h, CONSOLE_COLOUR_FG_DEFAULT);
+#else
+	std::cout
+		<< "\033[" << CONSOLE_COLOUR_BG_DEFAULT << "m"
+		<< "\033[" << CONSOLE_COLOUR_FG_DEFAULT << "m";
+#endif
+}
+
+template<typename T>
+void Colour::consoleColour(T colour) {
+#ifdef _WIN32
+	SetConsoleTextAttribute(h, colour);
+#else
+	std::cout << "\033[" << colour << "m";
+#endif
+}
+
+Logger::Logger() {
+
+#ifdef _WIN32
+	GetConsoleScreenBufferInfo(h, &csbiInfo);
+	wOldColorAttrs = csbiInfo.wAttributes;
+#endif
+
+	lookupTable[LOGGER_INFO] = "INFO";
+	lookupTable[LOGGER_WARN] = "WARN";
+	lookupTable[LOGGER_ERROR] = "ERROR";
+	lookupTable[LOGGER_PANIC] = "PANIC";
+	lookupTable[LOGGER_DEBUG] = "DEBUG";
+}
 
 #endif
