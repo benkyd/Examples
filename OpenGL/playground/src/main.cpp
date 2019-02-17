@@ -99,14 +99,14 @@ int main(int argc, char** argv) {
 	// Load, compile, apply and link shader programs
 	Shader simpleShader{ logger };
 	simpleShader.load("./resources/shaders/simple").attatch().link().use();
-
+	
 	GLint posAttrib = glGetAttribLocation(simpleShader.getProgram(), "position");
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
 	// Model matrice
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, {-12.0f, -20.0f, -20.0f});
+	model = glm::translate(model, {-20.0f, -20.0f, -20.0f});
 	// Gets uniform for model matrice, to be used later
 	GLint uniTrans = glGetUniformLocation(simpleShader.getProgram(), "model");
 
@@ -135,8 +135,8 @@ int main(int argc, char** argv) {
 
 		// Update tick (60ups)
 		if (UPSTimer()) {
-			model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-			model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 0.0f, 1.0f));
+			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 0.0f, 0.0f));
 			glm::vec4 result = model * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 			glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
 
