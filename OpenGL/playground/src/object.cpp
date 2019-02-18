@@ -39,3 +39,20 @@ void LoadOBJ(Logger& logger, std::string file, std::vector<glm::vec3>& vertices,
 
     logger << LOGGER_INFO << "Loaded OBJ: " << file << LOGGER_ENDL;
 }
+
+void FlatShade(std::vector<glm::vec3>& vertices, std::vector<glm::vec3>& normals, std::vector<GLushort>& elements) {
+    std::vector<glm::vec3> shared_vertices;
+    for (int i = 0; i < elements.size(); i++) {
+        vertices.push_back(shared_vertices[elements[i]]);
+        if ((i % 3) == 2) {
+            GLushort ia = elements[i-2];
+            GLushort ib = elements[i-1];
+            GLushort ic = elements[i];
+            glm::vec3 normal = glm::normalize(glm::cross(
+                shared_vertices[ic] - shared_vertices[ia],
+            shared_vertices[ib] - shared_vertices[ia]));
+            for (int n = 0; n < 3; n++)
+            normals.push_back(normal);
+        }
+    }
+}

@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
 	window = SDL_CreateWindow("OpenGL Playground V1.0",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640, 480,
+		1280, 720,
 		SDL_WINDOW_OPENGL);
 	glContext = SDL_GL_CreateContext(window);
 	SDL_GL_SetSwapInterval(0);
@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
 	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
 	// Projection matrice
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 1.0f, 1000.0f);
+	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 1000.0f);
 	// Get uniform and send it to the GPU    
 	GLint uniProj = glGetUniformLocation(simpleShader.getProgram(), "proj");
 	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));

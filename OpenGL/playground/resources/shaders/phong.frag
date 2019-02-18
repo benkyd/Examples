@@ -9,7 +9,7 @@ vec3 viewPos = vec3(0.0, 0.0, 0.0);
 out vec4 outColour;
 
 vec3 objectColour = vec3(0.58, 0.61, 0.627);
-vec3 lightColour = vec3(0.0, 1.0, 1.0);
+vec3 lightColour = vec3(1.0, 0.0, 1.0);
 
 void main() {
     float ambientStrength = 0.5;
