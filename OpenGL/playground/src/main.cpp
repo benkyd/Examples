@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
 
 	// Model matrice
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, {-10.0f, -10.0f, -10.0f});
+	model = glm::translate(model, {-15.0f, -15.0f, -15.0f});
 	// Gets uniform for model matrice, to be used later
 	GLint uniTrans = glGetUniformLocation(simpleShader.getProgram(), "model");
 
@@ -143,8 +143,8 @@ int main(int argc, char** argv) {
 		// Update tick (60ups)
 		if (UPSTimer()) {
 			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 0.0f, 1.0f));
-			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 0.0f, 0.0f));
-			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
+			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 0.0f, 0.0f));
+			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
 			glm::vec4 result = model * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 			glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
 
