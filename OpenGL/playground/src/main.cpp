@@ -25,6 +25,27 @@
 #include "object.h"
 #include "shader.h"
 
+
+class Camera {
+public:
+	Camera(const glm::vec3& position, const glm::vec3& rotation, float fov, float aspect, float zNear, float zFar) {
+		perspective = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
+		Position = position;
+		Rotation = rotation;
+		aspect = aspect;
+		zNear = zNear;
+		zFar = zFar;
+		forward = glm::vec3(0.0f, 0.0f, 1.0f);
+		up = glm::vec3(0.0f, 1.0f, 0.0f);
+	}
+
+	glm::mat4 perspective;
+	glm::vec3 Position, Rotation;
+	float fov, aspect, zNear, zFar;
+	glm::vec3 forward, up;
+};
+
+
 int main(int argc, char** argv) {
 	std::cout << "-----------------------------" << std::endl;
 	std::cout << "----- OpenGL Playground -----" << std::endl;
@@ -110,6 +131,9 @@ int main(int argc, char** argv) {
 	glEnableVertexAttribArray(normalAttrib);
 	glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, 0, (const void*)(vertices.size() * sizeof(glm::vec3)));
 
+	// Set up camera
+	Camera camera;
+
 
 	// Model matrice
 	glm::mat4 model = glm::mat4(1.0f);
@@ -147,6 +171,27 @@ int main(int argc, char** argv) {
 			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
 			glm::vec4 result = model * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 			glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
+
+
+			const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+			if (state[SDL_SCANCODE_W]) {
+				camera.Position.z += 0.01f * sin(glm::radians(camera.Rotation.y));
+				camera.Position.x += 0.01f * cos(glm::radians(camera.Rotation.y));
+			}
+			if (state[SDL_SCANCODE_S]) {
+				camera.Position.z -= 0.01f * sin(glm::radians(camera.Rotation.y));
+				camera.Position.x -= 0.01f * cos(glm::radians(camera.Rotation.y));
+			}
+			if (state[SDL_SCANCODE_A]) {
+				camera.Position.z -= 0.01f * cos(glm::radians(camera.Rotation.y));
+				camera.Position.x += 0.01f * sin(glm::radians(camera.Rotation.y));
+			}
+			if (state[SDL_SCANCODE_D]) {
+				camera.Position.z += 0.01f * cos(glm::radians(camera.Rotation.y));
+				camera.Position.x -= 0.01f * sin(glm::radians(camera.Rotation.y));
+			}
+
 
 			UpdateClock = SDL_GetTicks();
 		}
