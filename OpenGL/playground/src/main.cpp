@@ -110,9 +110,6 @@ int main(int argc, char** argv) {
 	glEnableVertexAttribArray(normalAttrib);
 	glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, 0, (const void*)(vertices.size() * sizeof(glm::vec3)));
 
-	glm::vec3 lightPos(2.20, 1.0f, 2.0f);
-	GLint uniLight = glGetUniformLocation(simpleShader.getProgram(), "lightPos");
-	glUniform3fv(uniLight, 1, GL_FALSE, glm::value_ptr(lightPos));
 
 	// Model matrice
 	glm::mat4 model = glm::mat4(1.0f);
@@ -145,9 +142,9 @@ int main(int argc, char** argv) {
 
 		// Update tick (60ups)
 		if (UPSTimer()) {
-			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 0.0f, 1.0f));
-			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 0.0f, 0.0f));
-			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 0.0f, 1.0f));
+			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 0.0f, 0.0f));
+			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
 			glm::vec4 result = model * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 			glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
 

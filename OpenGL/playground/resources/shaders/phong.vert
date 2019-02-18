@@ -13,5 +13,5 @@ uniform mat4 proj;
 void main() {
     gl_Position = proj * view * model * vec4(position, 1.0);
     FragPos = vec3(model * vec4(position, 1.0));
-    Normal = normal;
+    Normal = mat3(model) * normal;
 }
