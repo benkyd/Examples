@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
 	window = SDL_CreateWindow("OpenGL Playground V1.0",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		1280, 720,
+		640, 480,
 		SDL_WINDOW_OPENGL);
 	glContext = SDL_GL_CreateContext(window);
 	SDL_GL_SetSwapInterval(0);
@@ -65,15 +65,17 @@ int main(int argc, char** argv) {
 	isWindowOpen = true;
 	logger << LOGGER_INFO << "OpenGL and SDL initialized" << LOGGER_ENDL;
 
-
-
 	// Load an object into system memory
-	std::vector<glm::vec4> vertices;
+	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<GLushort> elements;
 
 	LoadOBJ(logger, "./resources/dragon.obj", vertices, normals, elements);
-
+	
+	std::vector<glm::vec3> toGPU;
+	toGPU.insert(toGPU.end(), vertices.begin(), vertices.end());
+	toGPU.insert(toGPU.end(), normals.begin(), normals.end());
+	
 	// Generate a vertex array object
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -86,7 +88,7 @@ int main(int argc, char** argv) {
 	// Bind buffer to the GPU
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	// Copy vertex data to the vertex buffer already on the GPU
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec4), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, toGPU.size() * sizeof(glm::vec3), &toGPU[0], GL_STATIC_DRAW);
 
 	// Generate another vertex buffer for the element array buffer
 	GLuint ebo;
@@ -98,15 +100,23 @@ int main(int argc, char** argv) {
 
 	// Load, compile, apply and link shader programs
 	Shader simpleShader{ logger };
-	simpleShader.load("./resources/shaders/simple").attatch().link().use();
+	simpleShader.load("./resources/shaders/phong").attatch().link().use();
 	
 	GLint posAttrib = glGetAttribLocation(simpleShader.getProgram(), "position");
 	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	GLint normalAttrib = glGetAttribLocation(simpleShader.getProgram(), "normal");
+	glEnableVertexAttribArray(normalAttrib);
+	glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, 0, (const void*)(vertices.size() * sizeof(glm::vec3)));
+
+	glm::vec3 lightPos(2.20, 1.0f, 2.0f);
+	GLint uniLight = glGetUniformLocation(simpleShader.getProgram(), "lightPos");
+	glUniform3fv(uniLight, 1, GL_FALSE, glm::value_ptr(lightPos));
 
 	// Model matrice
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, {-20.0f, -20.0f, -20.0f});
+	model = glm::translate(model, {-10.0f, -10.0f, -10.0f});
 	// Gets uniform for model matrice, to be used later
 	GLint uniTrans = glGetUniformLocation(simpleShader.getProgram(), "model");
 
@@ -121,7 +131,7 @@ int main(int argc, char** argv) {
 	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
 	// Projection matrice
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 1000.0f);
+	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 1.0f, 1000.0f);
 	// Get uniform and send it to the GPU    
 	GLint uniProj = glGetUniformLocation(simpleShader.getProgram(), "proj");
 	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
@@ -135,8 +145,9 @@ int main(int argc, char** argv) {
 
 		// Update tick (60ups)
 		if (UPSTimer()) {
-			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 0.0f, 1.0f));
-			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 0.0f, 0.0f));
+			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 0.0f, 1.0f));
+			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 0.0f, 0.0f));
+			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
 			glm::vec4 result = model * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 			glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
 
