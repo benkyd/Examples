@@ -30,8 +30,8 @@ class Camera {
 public:
 	Camera(const glm::vec3& position, const glm::vec3& rotation, float fov, float aspect, float zNear, float zFar) {
 		perspective = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
-		Position = position;
-		Rotation = rotation;
+		pos = position;
+		rot = rotation;
 		aspect = aspect;
 		zNear = zNear;
 		zFar = zFar;
@@ -39,8 +39,27 @@ public:
 		up = glm::vec3(0.0f, 1.0f, 0.0f);
 	}
 
+	glm::mat4 getViewProj() {
+		rot.x = glm::clamp(rot.x, -90.0f, 90.0f);
+
+		glm::vec3 front;
+		front.x = cos(glm::radians(rot.x)) * cos(glm::radians(rot.y));
+		front.y = sin(glm::radians(rot.x));
+		front.z = cos(glm::radians(rot.x)) * sin(glm::radians(rot.y));
+		forward = glm::normalize(front);
+
+		glm::vec3 up;
+		up.x = cos(glm::radians(rot.x + 90.0f)) * cos(glm::radians(rot.y));
+		up.y = sin(glm::radians(rot.x + 90.0f));
+		up.z = cos(glm::radians(rot.x + 90.0f)) * sin(glm::radians(rot.y));
+		up = glm::normalize(up);
+
+		glm::mat4 lookAt = glm::lookAt(pos, pos + forward, up);
+		return perspective * lookAt;
+	}
+
 	glm::mat4 perspective;
-	glm::vec3 Position, Rotation;
+	glm::vec3 pos, rot;
 	float fov, aspect, zNear, zFar;
 	glm::vec3 forward, up;
 };
@@ -77,13 +96,18 @@ int main(int argc, char** argv) {
 	window = SDL_CreateWindow("OpenGL Playground V1.0",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		1280, 720,
+		640, 480,
 		SDL_WINDOW_OPENGL);
 	glContext = SDL_GL_CreateContext(window);
 	SDL_GL_SetSwapInterval(0);
 
+
 	gladLoadGLLoader(SDL_GL_GetProcAddress);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_WarpMouseInWindow(window, 0, 0);
+
 	isWindowOpen = true;
+
 	logger << LOGGER_INFO << "OpenGL and SDL initialized" << LOGGER_ENDL;
 
 	// Load an object into system memory
@@ -132,7 +156,7 @@ int main(int argc, char** argv) {
 	glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, 0, (const void*)(vertices.size() * sizeof(glm::vec3)));
 
 	// Set up camera
-	Camera camera;
+	Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -90.0f, 0.0f), 45.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
 
 
 	// Model matrice
@@ -152,7 +176,7 @@ int main(int argc, char** argv) {
 	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
 	// Projection matrice
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 1000.0f);
+	glm::mat4 proj = camera.perspective;
 	// Get uniform and send it to the GPU    
 	GLint uniProj = glGetUniformLocation(simpleShader.getProgram(), "proj");
 	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
@@ -166,40 +190,49 @@ int main(int argc, char** argv) {
 
 		// Update tick (60ups)
 		if (UPSTimer()) {
-			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 0.0f, 1.0f));
+			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 0.0f, 1.0f));
 			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 0.0f, 0.0f));
-			model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
-			glm::vec4 result = model * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
+			// glm::vec4 result = model * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 			glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
 
 
 			const Uint8 *state = SDL_GetKeyboardState(NULL);
 
 			if (state[SDL_SCANCODE_W]) {
-				camera.Position.z += 0.01f * sin(glm::radians(camera.Rotation.y));
-				camera.Position.x += 0.01f * cos(glm::radians(camera.Rotation.y));
+				camera.pos.z += 0.01f * sin(glm::radians(camera.rot.y));
+				camera.pos.x += 0.01f * cos(glm::radians(camera.rot.y));
 			}
 			if (state[SDL_SCANCODE_S]) {
-				camera.Position.z -= 0.01f * sin(glm::radians(camera.Rotation.y));
-				camera.Position.x -= 0.01f * cos(glm::radians(camera.Rotation.y));
+				camera.pos.z -= 0.01f * sin(glm::radians(camera.rot.y));
+				camera.pos.x -= 0.01f * cos(glm::radians(camera.rot.y));
 			}
 			if (state[SDL_SCANCODE_A]) {
-				camera.Position.z -= 0.01f * cos(glm::radians(camera.Rotation.y));
-				camera.Position.x += 0.01f * sin(glm::radians(camera.Rotation.y));
+				camera.pos.z -= 0.01f * cos(glm::radians(camera.rot.y));
+				camera.pos.x += 0.01f * sin(glm::radians(camera.rot.y));
 			}
 			if (state[SDL_SCANCODE_D]) {
-				camera.Position.z += 0.01f * cos(glm::radians(camera.Rotation.y));
-				camera.Position.x -= 0.01f * sin(glm::radians(camera.Rotation.y));
+				camera.pos.z += 0.01f * cos(glm::radians(camera.rot.y));
+				camera.pos.x -= 0.01f * sin(glm::radians(camera.rot.y));
 			}
 
+			glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(camera.getViewProj()));
 
 			UpdateClock = SDL_GetTicks();
 		}
 
 		// Handle events
-		while (SDL_PollEvent(&event) != 0)
-			if (event.type == SDL_QUIT)
+		while (SDL_PollEvent(&event) != 0) {
+			if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE)
 				isWindowOpen = false;
+			switch (event.type) {
+			case SDL_MOUSEMOTION:
+				int mouseX = event.motion.xrel;
+				int mouseY = event.motion.yrel;
+				camera.rot.y += mouseX * 0.5f;
+				camera.rot.x += mouseY * -0.5f;
+			}
+		}
 
 		// Clear
 		const float clear[] = {0.1f, 0.45f, 0.9f, 1.0f};
