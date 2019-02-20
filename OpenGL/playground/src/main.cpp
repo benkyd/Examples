@@ -96,15 +96,16 @@ int main(int argc, char** argv) {
 	window = SDL_CreateWindow("OpenGL Playground V1.0",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640, 480,
+		// 640, 480,
+		1280, 720,
 		SDL_WINDOW_OPENGL);
 	glContext = SDL_GL_CreateContext(window);
-	SDL_GL_SetSwapInterval(0);
+	SDL_GL_SetSwapInterval(1);
 
 
 	gladLoadGLLoader(SDL_GL_GetProcAddress);
-	SDL_SetRelativeMouseMode(SDL_TRUE);
-	SDL_WarpMouseInWindow(window, 0, 0);
+	// SDL_SetRelativeMouseMode(SDL_TRUE);
+	// SDL_WarpMouseInWindow(window, 0, 0);
 
 	isWindowOpen = true;
 
@@ -115,7 +116,8 @@ int main(int argc, char** argv) {
 	std::vector<glm::vec3> normals;
 	std::vector<GLushort> elements;
 
-	LoadOBJ(logger, "./resources/dragon.obj", vertices, normals, elements);
+	// LoadOBJ(logger, "./resources/dragon.obj", vertices, normals, elements);
+	LoadOBJ(logger, "./resources/lucy.obj", vertices, normals, elements);
 	
 	std::vector<glm::vec3> toGPU;
 	toGPU.insert(toGPU.end(), vertices.begin(), vertices.end());
@@ -161,25 +163,33 @@ int main(int argc, char** argv) {
 
 	// Model matrice
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, {-15.0f, -15.0f, -15.0f});
+	model = glm::translate(model, {-170.0f, -170.0f, -170.0f});
+	model = glm::rotate(model, glm::radians(-160.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	// Gets uniform for model matrice, to be used later
 	GLint uniTrans = glGetUniformLocation(simpleShader.getProgram(), "model");
+	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
 
 	// View matrice
 	glm::mat4 view = glm::lookAt(
 		glm::vec3(1.0f, 1.0f, 1.0f),
-		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(0.0f, 0.0f, 1.0f)
+		glm::vec3(0.0f, 0.4f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f)
 	);
 	// Get uniform and send it to the GPU
 	GLint uniView = glGetUniformLocation(simpleShader.getProgram(), "view");
 	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
 	// Projection matrice
-	glm::mat4 proj = camera.perspective;
-	// Get uniform and send it to the GPU    
+	// glm::mat4 proj = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 1.0f, 1000.0f);//camera.perspective;
+	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 1000.0f);//camera.perspective;
+	// Get uniform and send it to the GPU
 	GLint uniProj = glGetUniformLocation(simpleShader.getProgram(), "proj");
 	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+
+
+	glm::vec3 lightPos = {100.0f, 100.0f, 0.0f}; //100.0f};
+	GLint uniLight = glGetUniformLocation(simpleShader.getProgram(), "lightpos");
+	glUniformMatrix4fv(uniLight, 1, GL_FALSE, glm::value_ptr(lightPos));
 
 
 	glEnable(GL_DEPTH_TEST);
@@ -190,13 +200,6 @@ int main(int argc, char** argv) {
 
 		// Update tick (60ups)
 		if (UPSTimer()) {
-			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 0.0f, 1.0f));
-			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 0.0f, 0.0f));
-			// model = glm::rotate(model, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
-			// glm::vec4 result = model * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-			glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
-
-
 			const Uint8 *state = SDL_GetKeyboardState(NULL);
 
 			if (state[SDL_SCANCODE_W]) {
@@ -216,7 +219,18 @@ int main(int argc, char** argv) {
 				camera.pos.x -= 0.01f * sin(glm::radians(camera.rot.y));
 			}
 
-			glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(camera.getViewProj()));
+			if (state[SDL_SCANCODE_Q]) {
+				model = glm::rotate(model, glm::radians(-1.5f), glm::vec3(0.0f, 1.0f, 0.0f));
+				glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
+			}
+
+			if (state[SDL_SCANCODE_E]) {
+				model = glm::rotate(model, glm::radians(1.5f), glm::vec3(0.0f, 1.0f, 0.0f));
+				glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
+			}
+
+			// glm::mat4 view = camera.getViewProj();
+			// glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
 			UpdateClock = SDL_GetTicks();
 		}
