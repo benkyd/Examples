@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
 	std::cout << "-------- Version 1.0 --------" << std::endl;
 	std::cout << "----- ©Benjamin Kyd 2019 ----" << std::endl;
 	std::cout << "-----------------------------" << std::endl;
-	std::cout << 								    std::endl;
+	std::cout << std::endl;
 
 	// Get global variables ready
 	Logger logger;
@@ -91,8 +91,8 @@ int main(int argc, char** argv) {
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	// MXAA
-    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "4");
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
@@ -122,11 +122,11 @@ int main(int argc, char** argv) {
 
 	// LoadOBJ(logger, "./resources/dragon.obj", vertices, normals, elements);
 	LoadOBJ(logger, "./resources/lucy.obj", vertices, normals, elements);
-	
+
 	std::vector<glm::vec3> toGPU;
 	toGPU.insert(toGPU.end(), vertices.begin(), vertices.end());
 	toGPU.insert(toGPU.end(), normals.begin(), normals.end());
-	
+
 	// Generate a vertex array object
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -152,7 +152,7 @@ int main(int argc, char** argv) {
 	// Load, compile, apply and link shader programs
 	Shader simpleShader{ logger };
 	simpleShader.load("./resources/shaders/phong").attatch().link().use();
-	
+
 	GLint posAttrib = glGetAttribLocation(simpleShader.getProgram(), "position");
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -167,7 +167,7 @@ int main(int argc, char** argv) {
 
 	// Model matrice
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, {-170.0f, -170.0f, -170.0f});
+	model = glm::translate(model, { -170.0f, -170.0f, -170.0f });
 	model = glm::rotate(model, glm::radians(-160.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	// Gets uniform for model matrice, to be used later
 	GLint uniTrans = glGetUniformLocation(simpleShader.getProgram(), "model");
@@ -191,53 +191,10 @@ int main(int argc, char** argv) {
 	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
 
-	glm::vec3 lightPos = {300.0f, 300.0f, 0.0f}; //100.0f};
-
-	// Make shadowmap
-
-	glm::vec3 lightInvDir = glm::vec3(0.5f, 2, 2);
-
-	// Compute the MVP matrix from the light's point of view
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
-	glm::mat4 depthViewMatrix = glm::lookAt(lightInvDir, glm::vec3(0,0,0), glm::vec3(0,1,0));
-	glm::mat4 depthModelMatrix = glm::mat4(1.0);
-	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix * depthModelMatrix;
-
-	Shader depthShader{ logger };
-	depthShader.load("./resources/shaders/shadowmap").attatch().link().use();
-
-	GLuint unilightSpaceMatrix = glGetUniformLocation(depthShader.getProgram(), "lightSpaceMatrix");
-	GLint uniLightTrans = glGetUniformLocation(depthShader.getProgram(), "model");
-	glUniformMatrix4fv(uniLightTrans, 1, GL_FALSE, glm::value_ptr(model));
-
-	GLuint depthMapFBO;
-	glGenFramebuffers(1, &depthMapFBO);  
-
-	const unsigned int SHADOW_WIDTH = 1280, SHADOW_HEIGHT = 720;
-
-	unsigned int depthMap;
-	glGenTextures(1, &depthMap);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 
-				SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);  
-
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);  
-
+	glm::vec3 lightPos = { -2.0f, 4.0f, -1.0f };
 
 	GLint uniLight = glGetUniformLocation(simpleShader.getProgram(), "lightpos");
 	glUniformMatrix3fv(uniLight, 1, GL_FALSE, glm::value_ptr(lightPos));
-
-	
-	GLint uniMlightSpaceMatrix = glGetUniformLocation(simpleShader.getProgram(), "lightSpaceMatrix");
-
 
 	simpleShader.use();
 	glEnable(GL_DEPTH_TEST);
@@ -278,23 +235,6 @@ int main(int argc, char** argv) {
 			}
 		}
 
-		// 1. first render to depth map
-		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-		glClear(GL_DEPTH_BUFFER_BIT);
-		depthShader.use();
-
-		float near_plane = 1.0f, far_plane = 1000.0f;
-		glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane); 
-
-		glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f), 
-										  glm::vec3( 0.0f, 0.0f,  0.0f), 
-										  glm::vec3( 0.0f, 1.0f,  0.0f));  
-		glm::mat4 lightSpaceMatrix = lightProjection * lightView; 
-
-		glUniformMatrix4fv(unilightSpaceMatrix, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-		glDrawElements(GL_TRIANGLES, elements.size(), GL_UNSIGNED_SHORT, 0);
-
 
 		glViewport(0, 0, 1280, 720);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -303,10 +243,6 @@ int main(int argc, char** argv) {
 		glClearBufferfv(GL_COLOR, 0, clear);
 		simpleShader.use();
 
-		glUniformMatrix4fv(uniMlightSpaceMatrix, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-
-
-		glBindTexture(GL_TEXTURE_2D, depthMap);
 		glDrawElements(GL_TRIANGLES, elements.size(), GL_UNSIGNED_SHORT, 0);
 
 		// Swap
