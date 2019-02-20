@@ -26,45 +26,6 @@
 #include "shader.h"
 
 
-class Camera {
-public:
-	Camera(const glm::vec3& position, const glm::vec3& rotation, float fov, float aspect, float zNear, float zFar) {
-		perspective = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
-		pos = position;
-		rot = rotation;
-		aspect = aspect;
-		zNear = zNear;
-		zFar = zFar;
-		forward = glm::vec3(0.0f, 0.0f, 1.0f);
-		up = glm::vec3(0.0f, 1.0f, 0.0f);
-	}
-
-	glm::mat4 getViewProj() {
-		rot.x = glm::clamp(rot.x, -90.0f, 90.0f);
-
-		glm::vec3 front;
-		front.x = cos(glm::radians(rot.x)) * cos(glm::radians(rot.y));
-		front.y = sin(glm::radians(rot.x));
-		front.z = cos(glm::radians(rot.x)) * sin(glm::radians(rot.y));
-		forward = glm::normalize(front);
-
-		glm::vec3 up;
-		up.x = cos(glm::radians(rot.x + 90.0f)) * cos(glm::radians(rot.y));
-		up.y = sin(glm::radians(rot.x + 90.0f));
-		up.z = cos(glm::radians(rot.x + 90.0f)) * sin(glm::radians(rot.y));
-		up = glm::normalize(up);
-
-		glm::mat4 lookAt = glm::lookAt(pos, pos + forward, up);
-		return perspective * lookAt;
-	}
-
-	glm::mat4 perspective;
-	glm::vec3 pos, rot;
-	float fov, aspect, zNear, zFar;
-	glm::vec3 forward, up;
-};
-
-
 int main(int argc, char** argv) {
 	std::cout << "-----------------------------" << std::endl;
 	std::cout << "----- OpenGL Playground -----" << std::endl;
@@ -162,7 +123,7 @@ int main(int argc, char** argv) {
 	glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, 0, (const void*)(vertices.size() * sizeof(glm::vec3)));
 
 	// Set up camera
-	Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -90.0f, 0.0f), 45.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
+	// Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -90.0f, 0.0f), 45.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
 
 
 	// Model matrice
@@ -226,12 +187,34 @@ int main(int argc, char** argv) {
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE)
 				isWindowOpen = false;
-			switch (event.type) {
-			case SDL_MOUSEMOTION:
+			if (event.key.keysym.sym == SDLK_r) {
+				simpleShader.reload();
+
+				posAttrib = glGetAttribLocation(simpleShader.getProgram(), "position");
+				glEnableVertexAttribArray(posAttrib);
+				glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+				normalAttrib = glGetAttribLocation(simpleShader.getProgram(), "normal");
+				glEnableVertexAttribArray(normalAttrib);
+				glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, 0, (const void*)(vertices.size() * sizeof(glm::vec3)));
+
+				uniTrans = glGetUniformLocation(simpleShader.getProgram(), "model");
+				glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
+				
+				uniView = glGetUniformLocation(simpleShader.getProgram(), "view");
+				glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
+
+				uniProj = glGetUniformLocation(simpleShader.getProgram(), "proj");
+				glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+
+				uniLight = glGetUniformLocation(simpleShader.getProgram(), "lightpos");
+				glUniformMatrix3fv(uniLight, 1, GL_FALSE, glm::value_ptr(lightPos));
+			}
+			if (event.type == SDL_MOUSEMOTION) {
 				int mouseX = event.motion.xrel;
 				int mouseY = event.motion.yrel;
-				camera.rot.y += mouseX * 0.5f;
-				camera.rot.x += mouseY * -0.5f;
+				// camera.rot.y += mouseX * 0.5f;
+				// camera.rot.x += mouseY * -0.5f;
 			}
 		}
 

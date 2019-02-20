@@ -106,6 +106,48 @@ Shader& Shader::load(std::string sourceLoc) {
     return *this;
 }
 
+Shader& Shader::reload() {
+	glDeleteProgram(m_program);
+	glDeleteShader(m_vert);
+	glDeleteShader(m_frag);
+
+	m_vertSource = readShader(m_vertLoc);
+	m_fragSource = readShader(m_fragLoc);
+
+	m_vert = glCreateShader(GL_VERTEX_SHADER);
+	m_frag = glCreateShader(GL_FRAGMENT_SHADER);
+
+	const char* vertSource = m_vertSource.c_str();
+	glShaderSource(m_vert, 1, &vertSource, NULL);
+	glCompileShader(m_vert);
+
+	const char* fragSource = m_fragSource.c_str();
+	glShaderSource(m_frag, 1, &fragSource, NULL);
+	glCompileShader(m_frag);
+
+	glGetShaderiv(m_vert, GL_COMPILE_STATUS, &m_status);
+	if (m_status == GL_FALSE) {
+		char buf[512];
+		glGetShaderInfoLog(m_vert, 512, NULL, buf);
+		logger << LOGGER_ERROR << buf << LOGGER_ENDL;
+	}
+
+	glGetShaderiv(m_frag, GL_COMPILE_STATUS, &m_status);
+	if (m_status == GL_FALSE) {
+		char buf[512];
+		glGetShaderInfoLog(m_frag, 512, NULL, buf);
+		logger << LOGGER_ERROR << buf << LOGGER_ENDL;
+	}
+
+	logger << LOGGER_INFO << "Vertex shader at '" << m_vertLoc << "' compiled..." << LOGGER_ENDL;
+	logger << LOGGER_INFO << "Fragment shader at '" << m_fragLoc << "' compiled..." << LOGGER_ENDL;
+
+	link();
+	attatch();
+
+	return *this;
+}
+
 GLuint Shader::getProgram() {
     return m_program;
 }

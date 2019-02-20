@@ -14,6 +14,7 @@ public:
     Shader& attatch();
     Shader& load(GLenum type, std::string sourceLoc);
     Shader& load(std::string sourceLoc);
+	Shader& reload();
 
     GLuint getProgram();
     GLuint getVertex();
