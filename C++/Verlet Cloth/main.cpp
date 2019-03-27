@@ -1,8 +1,12 @@
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
+
+const float GRAVITY = 5.81f;
+const float    DRAG = 0.99f;
 
 struct Vec2f {
     float x, y;
@@ -10,12 +14,27 @@ struct Vec2f {
 
 struct MassPoint {
     Vec2f sPosition;
-    Vec2f sVelocity;
+    bool bLocked = false; // If true, the point will not be able to move
+
+    MassPoint(Vec2f sPos)
+        : sPosition(sPos),
+          sLastPosition(sPos) {  }
 
     void step() {
-        sPosition.x += sVelocity.x;
-        sPosition.y += sVelocity.y;
+        if (bLocked) return;
+        // Inertia
+        Vec2f sVelocity;
+        sVelocity.x = sPosition.x - sLastPosition.x * DRAG;
+        sVelocity.y = sPosition.y - sLastPosition.y * DRAG;
+        
+        sPosition.x += sVelocity.x; 
+        sPosition.y += sVelocity.y + GRAVITY; 
+
+        sLastPosition.x = sPosition.x;
+        sLastPosition.y = sPosition.y;
     }
+private:
+    Vec2f sLastPosition;
 };
 
 class VerletCloth : public olc::PixelGameEngine {
@@ -28,23 +47,36 @@ public:
 
     bool OnUserCreate() override {
 
-        sPoints.push_back({{ 100.0f, 100.0f }, { 1.0f, 4.0f }});
+        sPoints.push_back({{ 1.0f, 1.0f }});
         
         return true;
     }
 
     bool OnUserUpdate(float fElapsedTime) override {
-        Clear(olc::WHITE);
 
         m_fTimeCounter += fElapsedTime;
 
         if (m_fTimeCounter >= 0.016f) {
+            Clear(olc::WHITE);
             m_fTimeCounter = 0.0f;
+
+
+
             for (auto& sPoint : sPoints){
+                std::stringstream str;
+                str << "Pos: X:" << sPoint.sPosition.x << ":Y:" << sPoint.sPosition.y;
+                DrawString(0, 0, str.str(), olc::BLACK);
+
                 sPoint.step();
                 FillRect(sPoint.sPosition.x, sPoint.sPosition.y, 4, 4, olc::BLACK);
             }
+    
+    
         }
+
+
+        if (GetKey(olc::ESCAPE).bPressed)
+            exit(0);
 
         return true;
     }
