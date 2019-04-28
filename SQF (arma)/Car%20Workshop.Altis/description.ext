@@ -1,0 +1,137 @@
+class RscTitles;
+class MyDialog
+{
+	idd = 2;
+	
+	class ControlsBackground
+	{
+		class Back
+		{
+			type = 0;
+			idc = -1;
+			x = safeZoneX + safeZoneW * 0.29375;
+			y = safeZoneY + safeZoneH * 0.3712963;
+			w = safeZoneW * 0.12395834;
+			h = safeZoneH * 0.32685186;
+			style = 0;
+			text = "";
+			colorBackground[] = {0,0,0,0.7};
+			colorText[] = {1,1,1,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+			shadow = 0;
+			
+		};
+		
+	};
+	class Controls
+	{
+
+		class SliderR
+		{
+			type = 43;
+			idc = 100;
+			x = safeZoneX + safeZoneW * 0.308125;
+			y = safeZoneY + safeZoneH * 0.60777778;
+			w = safeZoneW * 0.099375;
+			h = safeZoneH * 0.01555556;
+			style = 1024;
+			arrowEmpty = "\A3\ui_f\data\GUI\Cfg\Slider\arrowEmpty_ca.paa";
+			arrowFull = "\A3\ui_f\data\GUI\Cfg\Slider\arrowFull_ca.paa";
+			border = "\A3\ui_f\data\GUI\Cfg\Slider\border_ca.paa";
+			color[] = {0.6,0,0,1};
+			colorActive[] = {1,1,1,1};
+			thumb = "\A3\ui_f\data\GUI\Cfg\Slider\thumb_ca.paa";
+			tooltipColorShade[] = {0.6,0,0,1};
+			
+			onSliderPosChanged = "hint format [ '%1', _this ]; [] execVM 'change_colour.sqf'; uisleep 0.2;"
+		};
+
+		class SliderG
+		{
+			type = 43;
+			idc = 101;
+			x = safeZoneX + safeZoneW * 0.308125;
+			y = safeZoneY + safeZoneH * 0.63666667;
+			w = safeZoneW * 0.099375;
+			h = safeZoneH * 0.01555556;
+			style = 1024;
+			arrowEmpty = "\A3\ui_f\data\GUI\Cfg\Slider\arrowEmpty_ca.paa";
+			arrowFull = "\A3\ui_f\data\GUI\Cfg\Slider\arrowFull_ca.paa";
+			border = "\A3\ui_f\data\GUI\Cfg\Slider\border_ca.paa";
+			color[] = {0,0.2,0,1};
+			colorActive[] = {1,1,1,1};
+			thumb = "\A3\ui_f\data\GUI\Cfg\Slider\thumb_ca.paa";
+			
+			onSliderPosChanged = "hint format [ '%1', _this ]; [] execVM 'change_colour.sqf'; uisleep 0.2;"
+		};
+
+		class SliderB
+		{
+			type = 43;
+			idc = 102;
+			x = safeZoneX + safeZoneW * 0.308125;
+			y = safeZoneY + safeZoneH * 0.66666667;
+			w = safeZoneW * 0.099375;
+			h = safeZoneH * 0.01444445;
+			style = 1024;
+			arrowEmpty = "\A3\ui_f\data\GUI\Cfg\Slider\arrowEmpty_ca.paa";
+			arrowFull = "\A3\ui_f\data\GUI\Cfg\Slider\arrowFull_ca.paa";
+			border = "\A3\ui_f\data\GUI\Cfg\Slider\border_ca.paa";
+			color[] = {0.102,0.2,0.6,1};
+			colorActive[] = {1,1,1,1};
+			thumb = "\A3\ui_f\data\GUI\Cfg\Slider\thumb_ca.paa";
+			
+			onSliderPosChanged = "hint format [ '%1', _this ]; [] execVM 'change_colour.sqf'; uisleep 0.2;"
+		};
+			
+		class Button1
+		{
+			type = 1;
+			idc = -1;
+			x = safeZoneX + safeZoneW * 0.29427084;
+			y = safeZoneY + safeZoneH * 0.70740741;
+			w = safeZoneW * 0.04635417;
+			h = safeZoneH * 0.01388889;
+			
+			
+			style = 0;
+			action = "closeDialog 2;";
+			text = "Exit";
+			borderSize = 0;
+			colorBackground[] = {0.302,0.502,0.302,1};
+			colorText[] = {1,1,1,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+			soundClick[] = {"\A3\ui_f\data\sound\RscButton\soundClick",0.09,1.0};
+			soundEnter[] = {"\A3\ui_f\data\sound\RscButton\soundEnter",0.09,1.0};
+			soundEscape[] = {"\A3\ui_f\data\sound\RscButton\soundEscape",0.09,1.0};
+			soundPush[] = {"\A3\ui_f\data\sound\RscButton\soundPush",0.09,1.0};
+		};
+
+		class button2
+		{
+			type = 1;
+			idc = -1;
+			x = safeZoneX + safeZoneW * 0.37291667;
+			y = safeZoneY + safeZoneH * 0.70648149;
+			w = safeZoneW * 0.04635417;
+			h = safeZoneH * 0.01296297;
+
+
+			style = 0;
+			action = "hint 'Confirmed'; closeDialog 2;";
+			text = "Confirm";
+			colorBackground[] = {0.302,0.502,0.302,1};
+			colorText[] = {1,1,1,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+			soundClick[] = {"\A3\ui_f\data\sound\RscButton\soundClick",0.09,1.0};
+			soundEnter[] = {"\A3\ui_f\data\sound\RscButton\soundEnter",0.09,1.0};
+			soundEscape[] = {"\A3\ui_f\data\sound\RscButton\soundEscape",0.09,1.0};
+			soundPush[] = {"\A3\ui_f\data\sound\RscButton\soundPush",0.09,1.0};
+		};
+		
+	};
+	
+};
