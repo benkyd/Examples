@@ -1,0 +1,8 @@
+disableAI = 1;
+
+#include "defines.hpp"
+#include "eventRevive.hpp"
+
+class cfgFunctions {
+	#include "functions.hpp"
+};

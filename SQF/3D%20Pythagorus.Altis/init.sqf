@@ -1,4 +1,5 @@
+private _lol = -1;
 
-private _lol = [] call RR_fnc_distance;
+_lol = [[0, 0, 0], [1000, 1000, 1000]] call RR_fnc_distance;
 
 hint _lol;

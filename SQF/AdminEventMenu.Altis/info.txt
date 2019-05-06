@@ -1,0 +1,7 @@
+• Scripts to help admins run events, namely:
+[ ] Move all players to me within custom radius
+[ ] Set all players gear to my gear (as long as I'm not in admin suit)
+[ ] Teleport all downed players within custom radius to me 
+[ ] Spawn different unarmed helis in a circle on the salt flats
+[ ] Delete all event vehicles within a 5km radius (you'll use setVariable ["RR_EventVehicle",true,true] on all the vehicles when spawning)
+[ ] Any more you can think of
