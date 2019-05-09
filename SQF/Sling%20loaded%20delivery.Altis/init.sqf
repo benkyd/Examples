@@ -1,0 +1,2 @@
+
+gMissionStarted = false;

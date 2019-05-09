@@ -1,0 +1,202 @@
+version=53;
+class EditorData
+{
+	moveGridStep=1;
+	angleGridStep=0.2617994;
+	scaleGridStep=1;
+	autoGroupingDist=10;
+	toggles=1;
+	class ItemIDProvider
+	{
+		nextID=3;
+	};
+	class Camera
+	{
+		pos[]={10092.601,17.288755,12033.088};
+		dir[]={-0.52590108,-0.63688552,0.56386817};
+		up[]={-0.43440279,0.77094764,0.46576494};
+		aside[]={0.73134863,-5.9989907e-007,0.68211144};
+	};
+};
+binarizationWanted=0;
+addons[]=
+{
+	"A3_Structures_F_Civ_InfoBoards",
+	"A3_Characters_F",
+	"A3_Weapons_F_Mark_LongRangeRifles_DMR_03",
+	"A3_Weapons_F_Exp",
+	"A3_Weapons_F_Acc",
+	"A3_Weapons_F_Mark_Acc",
+	"A3_Weapons_F",
+	"A3_Weapons_F_Items"
+};
+class AddonsMetaData
+{
+	class List
+	{
+		items=5;
+		class Item0
+		{
+			className="A3_Structures_F";
+			name="Arma 3 - Buildings and Structures";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item1
+		{
+			className="A3_Characters_F";
+			name="Arma 3 Alpha - Characters and Clothing";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item2
+		{
+			className="A3_Weapons_F_Mark";
+			name="Arma 3 Marksmen - Weapons and Accessories";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item3
+		{
+			className="A3_Weapons_F_Exp";
+			name="Arma 3 Apex - Weapons and Accessories";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item4
+		{
+			className="A3_Weapons_F";
+			name="Arma 3 Alpha - Weapons and Accessories";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+	};
+};
+randomSeed=11229197;
+class ScenarioData
+{
+	author="plane000";
+};
+class Mission
+{
+	class Intel
+	{
+		timeOfChanges=1800.0002;
+		startWeather=0.30000001;
+		startWind=0.1;
+		startWaves=0.1;
+		forecastWeather=0.30000001;
+		forecastWind=0.1;
+		forecastWaves=0.1;
+		forecastLightnings=0.1;
+		year=2035;
+		month=6;
+		day=24;
+		hour=12;
+		minute=0;
+		startFogDecay=0.014;
+		forecastFogDecay=0.014;
+	};
+	class Entities
+	{
+		items=2;
+		class Item0
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={10085.967,13.467333,12044.893};
+				angles[]={6.249867,5.5562901,6.2378764};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+				init="this addAction [" \n "    ""Start Mission"", RR_fnc_triggerStart" \n "];";
+			};
+			id=0;
+			type="Land_Noticeboard_F";
+		};
+		class Item1
+		{
+			dataType="Group";
+			side="West";
+			class Entities
+			{
+				items=1;
+				class Item0
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={10086.731,12.405762,12037.962};
+						angles[]={0,5.4903727,0};
+					};
+					side="West";
+					flags=7;
+					class Attributes
+					{
+						isPlayer=1;
+						class Inventory
+						{
+							class primaryWeapon
+							{
+								name="srifle_DMR_03_F";
+								optics="optic_Arco_blk_F";
+								flashlight="acc_flashlight";
+								underBarrel="bipod_01_F_blk";
+								class primaryMuzzleMag
+								{
+									name="20Rnd_762x51_Mag";
+									ammoLeft=20;
+								};
+							};
+							class uniform
+							{
+								typeName="U_BG_Guerilla3_1";
+								isBackpack=0;
+								class ItemCargo
+								{
+									items=1;
+									class Item0
+									{
+										name="FirstAidKit";
+										count=1;
+									};
+								};
+							};
+							class vest
+							{
+								typeName="V_PlateCarrierH_CTRG";
+								isBackpack=0;
+								class MagazineCargo
+								{
+									items=1;
+									class Item0
+									{
+										name="20Rnd_762x51_Mag";
+										count=11;
+										ammoLeft=20;
+									};
+								};
+							};
+							map="ItemMap";
+							compass="ItemCompass";
+							watch="ItemWatch";
+							radio="ItemRadio";
+							goggles="G_Bandanna_aviator";
+							hmd="NVGoggles";
+							headgear="H_HelmetB_desert";
+						};
+					};
+					id=2;
+					type="B_soldier_M_F";
+				};
+			};
+			class Attributes
+			{
+			};
+			id=1;
+		};
+	};
+};

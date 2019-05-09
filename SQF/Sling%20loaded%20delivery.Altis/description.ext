@@ -1,0 +1,7 @@
+disableAI = 1;
+
+#include "defines.hpp"
+
+class cfgFunctions {
+	#include "functions.hpp"
+};
