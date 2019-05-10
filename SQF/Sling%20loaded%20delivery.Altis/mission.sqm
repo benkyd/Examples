@@ -8,14 +8,14 @@ class EditorData
 	toggles=1;
 	class ItemIDProvider
 	{
-		nextID=3;
+		nextID=21;
 	};
 	class Camera
 	{
-		pos[]={10092.601,17.288755,12033.088};
-		dir[]={-0.52590108,-0.63688552,0.56386817};
-		up[]={-0.43440279,0.77094764,0.46576494};
-		aside[]={0.73134863,-5.9989907e-007,0.68211144};
+		pos[]={10211.702,121.95953,11959.148};
+		dir[]={-0.52585119,-0.56704134,0.63401073};
+		up[]={-0.36201367,0.82367325,0.43647406};
+		aside[]={0.76971513,3.8649887e-008,0.63840675};
 	};
 };
 binarizationWanted=0;
@@ -28,13 +28,14 @@ addons[]=
 	"A3_Weapons_F_Acc",
 	"A3_Weapons_F_Mark_Acc",
 	"A3_Weapons_F",
-	"A3_Weapons_F_Items"
+	"A3_Weapons_F_Items",
+	"A3_Structures_F_Mil_Helipads"
 };
 class AddonsMetaData
 {
 	class List
 	{
-		items=5;
+		items=6;
 		class Item0
 		{
 			className="A3_Structures_F";
@@ -70,6 +71,13 @@ class AddonsMetaData
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
+		class Item5
+		{
+			className="A3_Structures_F_Mil";
+			name="Arma 3 - Military Buildings and Structures";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
 	};
 };
 randomSeed=11229197;
@@ -99,7 +107,7 @@ class Mission
 	};
 	class Entities
 	{
-		items=2;
+		items=18;
 		class Item0
 		{
 			dataType="Object";
@@ -197,6 +205,273 @@ class Mission
 			{
 			};
 			id=1;
+		};
+		class Item2
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={4882.4043,239.56299,20339.283};
+				angles[]={6.2299037,6.2548909,0.0026744273};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+				init="this addAction [" \n "    ""Deliver Mission"", RR_fnc_endDelivery" \n "];";
+			};
+			id=5;
+			type="Land_Noticeboard_F";
+		};
+		class Item3
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={4882.4854,238.4183,20331.756};
+				angles[]={0.012000273,0,0.043971907};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=6;
+			type="Land_HelipadCircle_F";
+		};
+		class Item4
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={12977.679,45.069313,20239.527};
+				angles[]={6.2418771,5.5469108,0.0039967569};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+				init="this addAction [" \n "    ""Deliver Mission"", RR_fnc_endDelivery" \n "];";
+			};
+			id=7;
+			type="Land_Noticeboard_F";
+		};
+		class Item5
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={12982.635,44.036316,20233.861};
+				angles[]={6.2259207,5.5752101,6.2205977};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=8;
+			type="Land_HelipadCircle_F";
+		};
+		class Item6
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={13854.786,13.810699,15578.89};
+				angles[]={0.013332055,5.416317,6.2778587};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+				init="this addAction [" \n "    ""Deliver Mission"", RR_fnc_endDelivery" \n "];";
+			};
+			id=9;
+			type="Land_Noticeboard_F";
+			atlOffset=9.5367432e-007;
+		};
+		class Item7
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={13860.438,13.04,15573.917};
+				angles[]={0.010663962,5.4446244,6.2645278};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=10;
+			type="Land_HelipadCircle_F";
+		};
+		class Item8
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={14602.184,18.701426,16743.752};
+				angles[]={-0,5.4904971,0};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+				init="this addAction [" \n "    ""Deliver Mission"", RR_fnc_endDelivery" \n "];";
+			};
+			id=11;
+			type="Land_Noticeboard_F";
+		};
+		class Item9
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={14607.452,17.91,16738.375};
+				angles[]={-0,5.5188046,0};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=12;
+			type="Land_HelipadCircle_F";
+		};
+		class Item10
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={23146.021,3.981426,18675.709};
+				angles[]={-0,6.1015859,0};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+				init="this addAction [" \n "    ""Deliver Mission"", RR_fnc_endDelivery" \n "];";
+			};
+			id=13;
+			type="Land_Noticeboard_F";
+		};
+		class Item11
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={23147.25,3.1900001,18668.283};
+				angles[]={-0,6.1298933,0};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=14;
+			type="Land_HelipadCircle_F";
+		};
+		class Item12
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={21279.881,29.919796,13475.669};
+				angles[]={6.2725158,5.4904971,6.2445378};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+				init="this addAction [" \n "    ""Deliver Mission"", RR_fnc_endDelivery" \n "];";
+			};
+			id=15;
+			type="Land_Noticeboard_F";
+			atlOffset=3.8146973e-006;
+		};
+		class Item13
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={21285.926,28.924883,13470.976};
+				angles[]={6.272521,5.5188046,0.04796192};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=16;
+			type="Land_HelipadCircle_F";
+		};
+		class Item14
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={3747.5391,11.596859,13353.839};
+				angles[]={0.021331646,2.1796465,0.017332481};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+				init="this addAction [" \n "    ""Deliver Mission"", RR_fnc_endDelivery" \n "];";
+			};
+			id=17;
+			type="Land_Noticeboard_F";
+			atlOffset=-9.5367432e-007;
+		};
+		class Item15
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={3741.4399,10.632298,13358.252};
+				angles[]={6.2765174,2.2079539,0.011995304};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=18;
+			type="Land_HelipadCircle_F";
+		};
+		class Item16
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={10163.419,13.825069,12114.577};
+				angles[]={0.0039967569,5.5627465,6.1769204};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+				init="this addAction [" \n "    ""Deliver Mission"", RR_fnc_endDelivery" \n "];";
+			};
+			id=19;
+			type="Land_Noticeboard_F";
+		};
+		class Item17
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={10168.285,12.425059,12108.834};
+				angles[]={6.2565165,5.5910573,6.1769123};
+			};
+			side="Empty";
+			flags=4;
+			class Attributes
+			{
+			};
+			id=20;
+			type="Land_HelipadCircle_F";
 		};
 	};
 };

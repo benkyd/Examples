@@ -7,22 +7,20 @@
  */
 
 // Throws missing ';' error at compiletime
-// if (gMissionStarted == true) then {
-// 	exitWith {
-// 		hint "You have already started a mission! Complete that first!";
-// 	};
-// };
+if (gMissionStarted) exitWith {
+	hint "You have already started a mission! Complete that first!";
+};
 
 gMissionStarted = true;
 
 private _deliveryPoint = [] call RR_fnc_getDeliveryPoint;
 
-private _deliveryPointMarkerR = createMarkerLocal ["Delivery Point Radius", _deliveryPoint];
+private _deliveryPointMarkerR = createMarkerLocal ["RR_Delivery_Radius", _deliveryPoint];
 _deliveryPointMarkerR setMarkerShapeLocal "ELLIPSE";
 _deliveryPointMarkerR setMarkerSizeLocal [500, 500];
 _deliveryPointMarkerR setMarkerColorLocal "ColorRed";
 
-private _deliveryPointMarker = createMarkerLocal ["Delivery Point", _deliveryPoint];
+private _deliveryPointMarker = createMarkerLocal ["RR_Delivery_Point", _deliveryPoint];
 _deliveryPointMarker setMarkerTypeLocal "mil_objective";
 _deliveryPointMarker setMarkerTextLocal "Delivery Point";
 
@@ -34,9 +32,7 @@ private _distanceToPoint = 0;
 // Lookup table of available shit
 private _helis = [
 	["B_Heli_Transport_03_unarmed_F",       "Huron"],
-	["B_Heli_Transport_03_unarmed_green_F", "Huron"],
-	["O_Heli_Transport_04_box_F",           "Taru"],
-	["O_Heli_Transport_04_covered_F",       "Taru"]
+	["B_Heli_Transport_03_unarmed_green_F", "Huron"]
 ];
 
 private _missionHeliIndex = floor random count _helis;
@@ -44,7 +40,7 @@ private _missionHeliClass = _helis select _missionHeliIndex select 0;
 private _missionHeliName = _helis select _missionHeliIndex select 1;
 gMissionHeli = createVehicle [_missionHeliClass, [10064.9,12045.4,0.00141716], [], 0];
 
-gMissionHeli setVariable ["RR_Mission_Heli", true];
+gMissionHeli setVariable ["RR_Mission_Heli", gMissionHeli];
 
 // Transport Item spawm (Hard coded eewwwwwwwww) [10085.4,12076.8,0.00141335]
 
@@ -66,11 +62,10 @@ private _missionItemClass = _items select _missionItemIndex select 0;
 private _missionItemName = _items select _missionItemIndex select 1;
 gMissionDelivery = createVehicle [_missionItemClass, [10085.4,12076.8,0.00141335], [], 0];
 
-gMissionDelivery setVariable ["RR_Mission_Item", true];
+gMissionDelivery setVariable ["RR_Mission_Item", gMissionDelivery];
 
 // Sling to vehicle
 gMissionHeli setSlingLoad gMissionDelivery;
-
 
 [
 	player, "RR_Delivery_Task", 

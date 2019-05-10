@@ -7,33 +7,22 @@
  * TODO: Make it actually random and _only_ available to spawn on land
  */
 
-
-private _numItems = 22; // Number of elements in _deliveryPointArray - microoptimization
+// These are hardcoded for reasons that i forgot
+// I could have easily named the objects on the map and 
+// Done a getPos on the object
+// But whatever it is what it is
 private _deliveryPointArray = [
-	[21770,4911.36,0.681143],
-	[23203.9,7446.1,0.012188],
-	[11704,22809,0],
-	[2844,20279.7,0],
-	[14504.4,23426.4,0.0445493],
-	[3030.39,10216,0.602249],
-	[6357,2082,0.1],
-	[7198,2533,0.1],
-	[7226,2187,0.1],
-	[8045,2835,0.1],
-	[8577,2320,0.1],
-	[9286,1902,0.1],
-	[9840,1786,0.1],
-	[10466,1886,0.1],
-	[10243,1576,0.1],
-	[10857,2275,0.1],
-	[11939,3402,0.1],
-	[11105,3009,0.1],
-	[13509,6166,0.1],
-	[13081,7804,0.1],
-	[12940,9326,0.1],
-	[13170,10292,0.1]
+	[4882.485, 20331.756, 0.0],
+	[12982.635, 20233.861, 0.0],
+	[13860.438, 15573.917, 0.0],
+	[14607.452, 16738.375, 0.0],
+	[23147.25, 18668.283, 0.0],
+	[21285.926, 13470.976, 0.0],
+	[3741.44, 13358.252, 0.0]
 ];
 
-private _ret = _deliveryPointArray select floor random _numItems;
+private _ret = _deliveryPointArray select floor random count _deliveryPointArray;
+
+_ret = [10168.285, 12108.834, 0.0];
 
 _ret;

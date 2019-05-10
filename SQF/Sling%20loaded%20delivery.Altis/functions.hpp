@@ -4,5 +4,7 @@ class RR {
         file = "RR_functions";
         class triggerStart {};
         class getDeliveryPoint {};
+        class endDelivery {};
+        class endMission {};
     };
 };
