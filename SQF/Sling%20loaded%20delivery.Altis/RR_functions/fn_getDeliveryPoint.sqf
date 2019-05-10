@@ -23,6 +23,4 @@ private _deliveryPointArray = [
 
 private _ret = _deliveryPointArray select floor random count _deliveryPointArray;
 
-_ret = [10168.285, 12108.834, 0.0];
-
 _ret;

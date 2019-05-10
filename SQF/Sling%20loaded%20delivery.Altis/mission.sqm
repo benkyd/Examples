@@ -12,7 +12,7 @@ class EditorData
 	};
 	class Camera
 	{
-		pos[]={10211.702,121.95953,11959.148};
+		pos[]={10090.861,17.751253,12039.334};
 		dir[]={-0.52585119,-0.56704134,0.63401073};
 		up[]={-0.36201367,0.82367325,0.43647406};
 		aside[]={0.76971513,3.8649887e-008,0.63840675};
@@ -120,7 +120,7 @@ class Mission
 			flags=4;
 			class Attributes
 			{
-				init="this addAction [" \n "    ""Start Mission"", RR_fnc_triggerStart" \n "];";
+				init="this addAction [" \n "    ""Start Mission"", RR_fnc_triggerStart" \n "];" \n "" \n "this addAction [" \n "    ""End Mission"", RR_fnc_endMission" \n "];";
 			};
 			id=0;
 			type="Land_Noticeboard_F";
