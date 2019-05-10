@@ -12,7 +12,7 @@ class EditorData
 	};
 	class Camera
 	{
-		pos[]={10090.861,17.751253,12039.334};
+		pos[]={10155.077,66.664452,11997.459};
 		dir[]={-0.52585119,-0.56704134,0.63401073};
 		up[]={-0.36201367,0.82367325,0.43647406};
 		aside[]={0.76971513,3.8649887e-008,0.63840675};
@@ -107,7 +107,7 @@ class Mission
 	};
 	class Entities
 	{
-		items=18;
+		items=16;
 		class Item0
 		{
 			dataType="Object";
@@ -312,7 +312,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={14602.184,18.701426,16743.752};
-				angles[]={-0,5.4904971,0};
+				angles[]={0,5.4904971,0};
 			};
 			side="Empty";
 			flags=4;
@@ -329,7 +329,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={14607.452,17.91,16738.375};
-				angles[]={-0,5.5188046,0};
+				angles[]={0,5.5188046,0};
 			};
 			side="Empty";
 			flags=4;
@@ -345,7 +345,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={23146.021,3.981426,18675.709};
-				angles[]={-0,6.1015859,0};
+				angles[]={0,6.1015859,0};
 			};
 			side="Empty";
 			flags=4;
@@ -362,7 +362,7 @@ class Mission
 			class PositionInfo
 			{
 				position[]={23147.25,3.1900001,18668.283};
-				angles[]={-0,6.1298933,0};
+				angles[]={0,6.1298933,0};
 			};
 			side="Empty";
 			flags=4;
@@ -438,39 +438,6 @@ class Mission
 			{
 			};
 			id=18;
-			type="Land_HelipadCircle_F";
-		};
-		class Item16
-		{
-			dataType="Object";
-			class PositionInfo
-			{
-				position[]={10163.419,13.825069,12114.577};
-				angles[]={0.0039967569,5.5627465,6.1769204};
-			};
-			side="Empty";
-			flags=4;
-			class Attributes
-			{
-				init="this addAction [" \n "    ""Deliver Mission"", RR_fnc_endDelivery" \n "];";
-			};
-			id=19;
-			type="Land_Noticeboard_F";
-		};
-		class Item17
-		{
-			dataType="Object";
-			class PositionInfo
-			{
-				position[]={10168.285,12.425059,12108.834};
-				angles[]={6.2565165,5.5910573,6.1769123};
-			};
-			side="Empty";
-			flags=4;
-			class Attributes
-			{
-			};
-			id=20;
 			type="Land_HelipadCircle_F";
 		};
 	};
