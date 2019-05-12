@@ -9,4 +9,4 @@ params [
     ["_target", [], [[]]]
 ];
 
-player setPos (target);
+player setPos _target;

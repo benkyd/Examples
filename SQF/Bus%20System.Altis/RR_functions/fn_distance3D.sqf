@@ -13,10 +13,18 @@ params [
 
 private _result = 0;
 
-_xD = (_x select 0) - (_y select 0);
-_yD = (_x select 1) - (_y select 1);
-_zD = (_x select 2) - (_y select 2);
+_xD = (_y select 0) - (_x select 0);
+_yD = (_y select 1) - (_x select 1);
+_zD = (_y select 2) - (_x select 2);
 
-_result = sqrt [_xD + _yD + _zD];
+_xD = _xD * _xD;
+_yD = _yD * _yD;
+_zD = _zD * _zD;
+
+private _d = _xD + _yD + _zD;
+
+if (!(_d isEqualTo 0)) then {
+    _result = sqrt _d;
+};
 
 _result;

@@ -34,6 +34,7 @@ private _i = 0;
 hint "Your bus will arrive in 10 seconds";
 uiSleep 10;
 hint "All aboard!";
+uiSleep 1;
 
 [(_locations select _positionInStops)] call RR_fnc_doTeleport;
 

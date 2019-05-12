@@ -10,6 +10,6 @@ params [
     ["_distance", 0, [0]]
 ];
 
-private _fare = _distance * 3;
+private _fare = floor _distance * 3;
 
 _fare;

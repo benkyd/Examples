@@ -25,12 +25,12 @@ private _i = 0;
         private _destLocation = _locations select _j;
         private _distance = [_location, _destLocation] call RR_fnc_distance3D;
 
-        private _price = [parseNumber [_distance]] call RR_fnc_busFare;
+        private _price = [_distance] call RR_fnc_busFare;
 
-        private _signName = format ["%1 - £%2", _x, _price];
+        private _signName = format ["%1  £%2", _x, _price];
 
         _sign addAction [
-            _x, RR_fnc_doSignPressed, [_x, _price]
+            _signName, RR_fnc_doSignPressed, [_x, _price]
         ];
         _j = _j + 1;
     } forEach _stops;
