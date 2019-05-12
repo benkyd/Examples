@@ -3,6 +3,8 @@
  *     init.sqf
  */
 
-[] call RR_fnc_loadConfig;
 
+private _stops = getArray (missionConfigFile >> "cfgBus" >> "stops" >> "names");
+private _locations = getArray (missionConfigFile >> "cfgBus" >> "stops" >> "locations");
 
+private _signs = [_stops, _locations] call RR_fnc_setupSigns;
