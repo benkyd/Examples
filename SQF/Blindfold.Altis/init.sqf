@@ -1,0 +1,1 @@
+RR_Blindfolded = false;
