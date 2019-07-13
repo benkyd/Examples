@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Movies</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <style>
+            body {
+                font-family: 'Raleway', sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="Loading">Loading Movies...</div>
+        <div id="movieContainer"></div>
+
+        <script>
+            let movieContainer = document.getElementById('movieContainer');
+            let loading = document.getElementById('Loading');
+
+            async function loadMovies() {
+                let res = await fetch('/movies', {
+                    method: 'GET'
+                });
+    
+                res = await res.json();
+    
+                for (i of res) {
+                    movieContainer.innerHTML += `<div id="movieItem"><button onclick="window.location.href='${i}'">${i}</button></div><br>\n`;
+                }
+
+                loading.style.display = "none";
+            }
+
+            loadMovies();
+        </script>
+    </body>
+</html>
