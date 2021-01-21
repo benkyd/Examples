@@ -7,7 +7,7 @@
     "express": "^4.16.3",
     "fs": "0.0.1-security",
     "serialport": "^6.2.2",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.4.0"
   },
   "devDependencies": {},
   "scripts": {
